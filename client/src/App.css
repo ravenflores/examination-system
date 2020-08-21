@@ -4,9 +4,34 @@
 a {
   color: black !important;
 }
+@media only screen and (max-width:560px){
+  #nav-mobile{
+      visibility: hidden;
+  }
+  .brand-logo{
+    font-family: 'Grand Hotel', cursive;
+    margin-left: 38%;
+    
+  }
+  
+}
+@media only screen and (min-width:560px){
+  .sidenav-trigger{
+      visibility: hidden;
+  } 
+  .brand-logo{
+    font-family: 'Grand Hotel', cursive;
+    margin-left: 10px;
+    
+  }
 
-.brand-logo{
-  font-family: 'Grand Hotel', cursive;
+  
+}
+#log-out{
+  margin-left: 25px;
+}
+.sidenav{
+  width: 250px;
 }
 
 .mycard{
