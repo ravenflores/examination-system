@@ -39,10 +39,10 @@ const customMiddleware = (req,res,next) =>{
 // app.use(customMiddleware)   
 
 
-app.get('/',(req,res) => {
-    console.log("home")
-    res.send("Hello World")
-})
+// app.get('/',(req,res) => {
+//     console.log("home")
+//     res.send("Hello World")
+// })
 app.get('/about',customMiddleware,(req,res) => {
     console.log("about")
     res.send("Hello World About")
