@@ -10,13 +10,11 @@ function Navbar() {
 
     useEffect(() => {
         document.addEventListener('DOMContentLoaded', function() {
-            var elems = document.querySelectorAll('.sidenav');
-            var instances = M.Sidenav.init(elems, {});
-          });
-        return () => {
-            
-        }
-    }, [])
+            var elems = document.querySelectorAll('.sidenav')
+            var instances = M.Sidenav.init(elems, {})
+          })
+       
+    },[])
 
   const {state,dispatch} = useContext(UserContext)
   const history = useHistory()
@@ -60,14 +58,14 @@ function Navbar() {
     </div>  
   </nav>
 
-  <ul id="slide-out" className="sidenav">s
+  <ul id="slide-out" className="sidenav">
     <li><div className="user-view">
       <div className="background">
         <img src={state?state.photo:"https://images.unsplash.com/photo-1522039553440-46d3e1e61e4a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60" }/>
       </div>
       <a href="#user"><img className="circle" src={state?state.photo:"https://images.unsplash.com/photo-1522039553440-46d3e1e61e4a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"} /></a>
-      <a href="#name"><span className="black-text name">{state?state.name:"loading..."}</span></a>
-      <a href="#email"><span className="black-text email">{state?state.email:"loading..."}</span></a>
+      <a href="#name"><span className="black-text name">{state?state.name:null}</span></a>
+      <a href="#email"><span className="black-text email">{state?state.email:null}</span></a>
     </div></li>
  
     <li><Link to="/">Home</Link></li>
