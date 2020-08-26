@@ -27,12 +27,16 @@ a {
 
   
 }
+
+#prof{
+  width: 100%;
+
+}
+
 #log-out{
   margin-left: 25px;
 }
-.sidenav{
-  width: 250px;
-}
+
 
 .mycard{
   margin: 30px;

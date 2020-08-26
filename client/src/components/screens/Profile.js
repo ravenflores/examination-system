@@ -95,20 +95,21 @@ function Profile() {
 
             <div style = {{
                 display:"flex",
-                justifyContent:"space-around",
-                margin: "18px 0px",
+                margin: "30px 30px 20px"
                 
                 
             }}>
-                <div>
+                <div style={{
+                    margin: "0px 20px"
+                }}>
                     <img style= {{width: "160px",height:"160px",borderRadius:"80px"}}
                     src={state?state.photo:"https://images.unsplash.com/photo-1522039553440-46d3e1e61e4a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"}
                     />
                     
                 </div>
-                <div >
+                <div >  
                     <h4> {state?state.name:"loading"} </h4>
-                    <div style = {{display: "flex", justifyContent:"space-between",width:"108%"}}>
+                    <div style = {{display: "flex", justifyContent:"space-between",width:"108%",margin:"0px 10px 0px"}}>
                     <h6>{mypics.length} post</h6>
                     <h6>{state?state.followers.length:0} followers</h6>
                     <h6>{state?state.following.length:0} following</h6> 

@@ -9,6 +9,7 @@ import CreatePost from './components/screens/CreatePost'
 import UserProfile from './components/screens/UserProfile'
 import Subscriptions from './components/screens/Subscriptions'
 import {reducer,initialState} from './reducers/userReducer'
+import TemporaryDrawer from './components/Drawer'
 
 
 

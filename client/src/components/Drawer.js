@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext,useState,useEffect} from 'react'
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -10,6 +10,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import { Menu } from '@material-ui/icons';
+import {Link,useHistory} from 'react-router-dom'
+import { UserContext } from '../App'
+import Box from '@material-ui/core/Box';
+import {createMuiTheme,responsiveFontSizes,MuiThemeProvider,Typography} from '@material-ui/core';
 
 const useStyles = makeStyles({
   list: {
@@ -18,13 +23,25 @@ const useStyles = makeStyles({
   fullList: {
     width: 'auto',
   },
+  root:{
+    justifyContent: 'center',
+  },
 });
+
+let theme = createMuiTheme()
+theme = responsiveFontSizes(theme)
+
+
 
 export default function TemporaryDrawer() {
   const classes = useStyles();
-  const [state, setState] = React.useState({
+  const history = useHistory()  
+  const {state,dispatch} = useContext(UserContext)
+  const [states, setStates] = React.useState({
+    top: false,
     left: false,
-   
+    bottom: false,
+    right: false,
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -32,8 +49,28 @@ export default function TemporaryDrawer() {
       return;
     }
 
-    setState({ ...state, [anchor]: open });
+    setStates({ ...states, [anchor]: open });
   };
+
+  const links = (index) => {
+    console.log("napindot")
+    if(index == 0){
+
+        history.push('/')
+    }
+    if(index == 1){
+
+        history.push('/profile')
+    }
+    if(index == 2){
+
+        history.push('/createpost')
+    }
+    if(index == 3){
+
+        history.push('/myfollowingpost')
+    }
+}
 
   const list = (anchor) => (
     <div
@@ -44,9 +81,28 @@ export default function TemporaryDrawer() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
+
+
+    <List>
+        <ListItem button >
+                 <img id="prof" src={state?state.photo:"https://images.unsplash.com/photo-1522039553440-46d3e1e61e4a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60" }/>
+         </ListItem>
+    </List>
+    <Divider />
+    <List>
+        <ListItem>
+        <MuiThemeProvider theme={theme}>
+        <Typography variant="subtitle1" gutterBottom>
+            {state?state.name:"loading"}
+        </Typography>
+        </MuiThemeProvider>
+        </ListItem>
+    </List>
+    <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
+
+        {['Home', 'Profile', 'Create Post', 'Following'].map((text, index) => (
+          <ListItem button onClick={()=>links(index)}>
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
@@ -54,12 +110,7 @@ export default function TemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+       
       </List>
     </div>
   );
@@ -68,8 +119,10 @@ export default function TemporaryDrawer() {
     <div>
       {['left'].map((anchor) => (
         <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-          <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
+          <Button onClick={toggleDrawer(anchor, true)}>
+          <Menu />
+          </Button>
+          <Drawer anchor={anchor} open={states[anchor]} onClose={toggleDrawer(anchor, false)}>
             {list(anchor)}
           </Drawer>
         </React.Fragment>
