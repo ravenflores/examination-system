@@ -3,18 +3,13 @@ import "../App.css"
 import {Link,useHistory} from 'react-router-dom'
 import { UserContext } from '../App'
 import M from 'materialize-css'
+import TemporaryDrawer from './Drawer'
 
 
 
 function Navbar() {
 
-    useEffect(() => {
-        document.addEventListener('DOMContentLoaded', function() {
-            var elems = document.querySelectorAll('.sidenav')
-            var instances = M.Sidenav.init(elems, {})
-          })
-       
-    },[])
+  
 
   const {state,dispatch} = useContext(UserContext)
   const history = useHistory()
@@ -48,14 +43,15 @@ function Navbar() {
              <nav>
     <div className="nav-wrapper white">
       {state?
-       <a href="#" data-target="slide-out" className="sidenav-trigger show-on-large"><i className="material-icons">menu</i></a>
-     :null
+     <ul className="sidenav-trigger"><TemporaryDrawer /></ul>:null
       }
     <Link to={state? "/":"/login"} className="brand-logo left">Instagram</Link>
       <ul id="nav-mobile" className="right">
         {renderList()}
       </ul>
     </div>  
+
+    
   </nav>
 
   <ul id="slide-out" className="sidenav">
