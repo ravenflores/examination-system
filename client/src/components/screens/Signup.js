@@ -49,7 +49,7 @@ function Login() {
                 surname,   
                 password,
                 email,
-                photo:""
+                photo:"https://images.unsplash.com/photo-1522039553440-46d3e1e61e4a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"
 
             })
         }).then(res => res.json())
