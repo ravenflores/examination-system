@@ -8,11 +8,17 @@ function Login() {
     const history = useHistory()
     const [password,setPassword] = useState("")
     const [email,setEmail] = useState("")
-    const PostData =() =>{
-
+    const [emailStats,setEmailStats] = useState("")
+    const [msg,setMsg] = useState("")
+    const [msgstats,setMsgstats] = useState(false)
+    const [disable,setDisable] = useState(false)
+    
+    const PostData =(e) =>{
+        e.target.disabled = true
         if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email))
         {
-            M.toast({html: "invalid email",classes:"#c62828 red darken-3"})
+            setEmailStats('Invalid email try again')
+            e.target.disabled = false  
             return
         }
         
@@ -30,16 +36,16 @@ function Login() {
         .then(data =>{
             console.log(data)
             if(data.error){
-                M.toast({html: data.error,classes:"#c62828 red darken-3"})
+               setEmailStats(data.error)
+               setDisable(false)
             }
             else{
                 localStorage.setItem("jwt",data.token) 
                 localStorage.setItem("user", JSON.stringify(data.user))
                 dispatch({type:"USER",payload:data.user})
-                M.toast({html:"signed in success",classes:"#388e3c green darken-2"})
                 history.push('/')
             }
-        })
+        },e.target.disabled = disable)
     }
     return (
         <div className="mycard">
@@ -50,15 +56,19 @@ function Login() {
                 type="text"
                 placeholder="email"
                 value={email}
+                maxLength="200"
                 onChange = {(e) =>setEmail(e.target.value)} />
+
+                <a id="emailstate">{emailStats}</a>
                 <input
                 type="password"
                 placeholder="password"
+                maxLength ="200"
                 value= {password}
                 onChange = {(e) =>setPassword(e.target.value)} />
                 <button className="btn #64b5f6 blue lighten-2"
-                onClick = {()=>PostData()}
-                >Sign In</button>
+                onClick = {(e)=>PostData(e)}
+                >Log In</button>
                 <h5>
                     <Link to="/signup">Do not have an account?</Link>
                 </h5>

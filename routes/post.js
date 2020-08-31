@@ -31,8 +31,8 @@ router.get('/getsubpost',requireLogin,(req,res) =>{
 router.post('/createpost',requireLogin,(req,res) => {
     console.log("eto :"+ JSON.stringify( req.body))
     const {title,body,picture} = req.body
-    if(!title || !body || !picture){
-        res.status(422).json({error: "Please add all the fields"})
+    if(!picture){
+       return res.status(422).json({error: "Please add photo!"})
     }
   
     req.user.password = undefined
@@ -151,7 +151,7 @@ router.delete('/deletepost/:postId',requireLogin,(req,res) => {
 })
 router.put('/deletecomment/:postId/:commentId',requireLogin,(req,res) => {
  
-
+    console.log(req.params.commentId)
     Post.findByIdAndUpdate({_id:req.params.postId},{
         $pull:{"comments":{"_id":req.params.commentId}}
     },{

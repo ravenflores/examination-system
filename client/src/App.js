@@ -10,6 +10,8 @@ import UserProfile from './components/screens/UserProfile'
 import Subscriptions from './components/screens/Subscriptions'
 import {reducer,initialState} from './reducers/userReducer'
 import TemporaryDrawer from './components/Drawer'
+import RecipeReviewCard from './components/Card'
+import SimpleAlerts from './components/Alert'
 
 
 
@@ -67,8 +69,10 @@ function App() {
 
     <BrowserRouter>
     <Navbar />
-    
+
+    {/* <SimpleAlerts /> */}
     <Routing />
+    {/* <RecipeReviewCard /> */}
     </BrowserRouter>
   </UserContext.Provider>
     

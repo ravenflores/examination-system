@@ -1,64 +1,103 @@
 import React,{useState} from 'react'
-import { Link,useHistory } from 'react-router-dom'
 import M from 'materialize-css'
-
+import { makeStyles } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
+import SimpleAlerts from '../Alert'
+import TextField from '@material-ui/core/TextField'; 
+import {BrowserRouter, Route,Switch,useHistory,Link} from 'react-router-dom'
 function Login() {
     const history = useHistory()
     const [name,setName] = useState("")
+    const [surname,setSurname] = useState("")
     const [password,setPassword] = useState("")
     const [email,setEmail] = useState("")
     const [image,setImage] = useState("")
+    const [disable,setDisable] = useState(false)
     const [url,setUrl] = useState("")
-    const PostData =(pic) =>{
+    const [emailStats,setEmailStats] = useState("")
+    const [msg,setMsg] = useState("")
+    const [msgstats,setMsgstats] = useState(false)
+    const useStyles = makeStyles((theme) => ({
+        root: {
+          width: '100%',
+          '& > * + *': {
+            marginTop: theme.spacing(2),
+          },
+        },
+      }));
+
+    const classes = useStyles();
+   
+   
+    const PostData =(e) =>{
+        e.target.disabled = true
         if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email))
         {
-            M.toast({html: "invalid email",classes:"#c62828 red darken-3"})
+            console.log('invalid')
+            setEmailStats('Invalid email try again')
+            e.target.disabled = false  
             return
         }
+
         fetch("/signup",{
             method:"post",
             headers:{
                 "Content-Type": "application/json"
             },
             body:JSON.stringify({
-                name,   
+                name,
+                surname,   
                 password,
-                email,
-                photo:pic
+                email
 
             })
         }).then(res => res.json())
         .then(data =>{
             if(data.error){
-                M.toast({html: data.error,classes:"#c62828 red darken-3"})
+                console.log(data.error)
+            setDisable(false)
+            setEmailStats(data.error)
+            return
             }
             else{
-                M.toast({html:data.message,classes:"#388e3c green darken-2"})
+               setMsg(data.message)
+               setMsgstats(true)
+               setTimeout(()=>{
                 history.push('/login')
+            },1500)
+               
             }
-        })
+        },  e.target.disabled = disable
+        
+        )
+
+       
+
+
     }
 
-    const postDetails = () =>{
-        const data = new FormData()
-        data.append("file",image)
-        data.append("upload_preset","project-instagram")
-        data.append("cloud_name","raven23rd")
-        fetch("https://api.cloudinary.com/v1_1/raven23rd/image/upload",{
-            method: "post",
-            body:data
-        })
-        .then(res=>res.json())
-        .then(data => {
-            console.log(data)
-            // setUrl(data.url)
-            PostData(data.url)
-        })
-        .catch(err => {
+    const postDetails = (e) =>{
 
+            const data = new FormData()
+            data.append("file",image)
+            data.append("upload_preset","project-instagram")
+            data.append("cloud_name","raven23rd")
+            fetch("https://api.cloudinary.com/v1_1/raven23rd/image/upload",{
+                method: "post",
+                body:data
+            })
+            .then(res=>res.json())
+            .then(data => {
+                console.log(data)
+                // setUrl(data.url)
 
-            console.log(err)
-        })
+            })
+            .catch(err => {
+    
+    
+                console.log(err)
+            })
+        
         
        
 
@@ -68,43 +107,54 @@ function Login() {
     }
 
     return (
+        <>
+        {msgstats?
+         <div className={classes.root}>
+         <Alert variant="filled" severity="success">
+             {msg}
+         </Alert>
+        </div>:null
+        }
+        
         <div className="mycard">
             <div className="card auth-card input-field">
                 <h2>Instagram</h2>
                 <input
                 type="text"
-                placeholder="name"
+                placeholder="firstname"
                 value = {name}
                 onChange = {(e) =>setName(e.target.value)}
+                />
+                <input
+                type="text"
+                placeholder="surname"
+                value = {surname}
+                onChange = {(e) =>setSurname(e.target.value)}
                 />
 
                 <input
                 type="text"
                 placeholder="email"
                 value={email}
+                maxLength="200"
                 onChange = {(e) =>setEmail(e.target.value)} />
+                <a id="emailstate">{emailStats}</a>
                 <input
-                type="password"
+                type="password" 
                 placeholder="password" 
                 value= {password}
                 onChange = {(e) =>setPassword(e.target.value)} />
-                 <div className="file-field input-field">
-                    <div className="btn #64b5f6 blue lighten-2">
-                        <span>Upload Image</span>
-                        <input type="file" onChange={(e)=>setImage(e.target.files[0])}/>
-                    </div>
-                    <div className="file-path-wrapper">
-                        <input className="file-path validate" type="text" />
-                    </div>
-                </div>
                 <button className="btn #64b5f6 blue lighten-2"
-                onClick = {()=>postDetails()}
+                onClick={(e)=>PostData(e)}
                 >Signup</button>
+                
+               
                 <h5>
                     <Link to="/login">Already have an account?</Link>
                 </h5>
             </div>
         </div>
+        </>
     )
 }
 

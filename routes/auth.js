@@ -14,15 +14,15 @@ router.get('/protected',requireLogin,(req,res) => {
 })
 
 router.post('/signup',(req,res) => {
-    const {name,email,password,photo} = req.body
-    if(!email || !password || !name || !photo) {
+    const {name,email,password,surname} = req.body
+    if(!email || !password || !name  || !surname) {
         return res.status(422).json({error: "please add all the fields"})
     }
-    res.json({message:"successfully created"})
-
+    
     User.findOne({email: email})
     .then ((savesUser) => {
         if(savesUser){
+            console.log("may email")
             return res.status(422).json({error: "user already exist with that email"})
         }
         bcrypt.hash(password,12)
@@ -32,7 +32,7 @@ router.post('/signup',(req,res) => {
                 email,
                 password:hashpassword,
                 name,
-                photo,
+                surname,
                 followers:[],
                 following:[]
             })

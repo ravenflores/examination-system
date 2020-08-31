@@ -6,6 +6,11 @@ const userSchema = new mongoose.Schema({
         required:true,
         
     },
+    surname: {
+        type: String,
+        required:true,
+        
+    },
     email: {
         type: String,
         required: true
@@ -16,7 +21,7 @@ const userSchema = new mongoose.Schema({
     },
     photo: {
         type:String,
-        required: true
+        required: false
     },
     followers:[{
         type: ObjectId,

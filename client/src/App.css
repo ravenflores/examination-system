@@ -28,11 +28,29 @@ a {
   
 }
 
+#bb{
+  font-size: 20px;
+}
+
+.card-content #pp {
+  margin: 15px !important;
+}
+p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 390px;
+}
+
 #prof{
   width: 100%;
 
 }
-
+#emailstate{
+  color: red !important;
+  -webkit-box-align: left !important;
+  
+}
 #log-out{
   margin-left: 25px;
 }
@@ -47,6 +65,11 @@ a {
   text-align: center;
   max-width: 400px;
   margin: 10px auto;
+}
+
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid rgb(8, 93, 252) !important;
+  box-shadow: 0 1px 0 0 rgb(8, 93, 252) !important;
 }
 
 .input-field input[type=text]:focus {

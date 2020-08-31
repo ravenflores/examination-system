@@ -89,15 +89,13 @@ export default function TemporaryDrawer() {
          </ListItem>
     </List>
     <Divider />
-    <List>
-        <ListItem>
+   
         <MuiThemeProvider theme={theme}>
         <Typography variant="subtitle1" gutterBottom>
             {state?state.name:"loading"}
         </Typography>
         </MuiThemeProvider>
-        </ListItem>
-    </List>
+    
     <Divider />
       <List>
 
