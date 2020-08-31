@@ -48,7 +48,8 @@ function Login() {
                 name,
                 surname,   
                 password,
-                email
+                email,
+                photo:""
 
             })
         }).then(res => res.json())
