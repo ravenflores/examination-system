@@ -126,7 +126,7 @@ function CreatePost() {
             </div>
             <button className="btn #64b5f6 blue lighten-2"
                 onClick={(e)=>postCreate(e.target)}
-                >Signup</button>
+                >Post</button>
             
             
         </div>
