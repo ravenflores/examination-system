@@ -211,9 +211,7 @@ function Home() {
                                         
                                         {
                                             record.postedBy._id == state._id && 
-                                
-                                            
-                                           
+
                                         <Menu
                                             id="simple-menu"
                                             anchorEl={anchorEl}
