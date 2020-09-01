@@ -7,6 +7,7 @@ import Profile from './components/screens/Profile'
 import Signup from './components/screens/Signup'
 import CreatePost from './components/screens/CreatePost'
 import UserProfile from './components/screens/UserProfile'
+import Posted from './components/screens/Posted'
 import Subscriptions from './components/screens/Subscriptions'
 import {reducer,initialState} from './reducers/userReducer'
 import TemporaryDrawer from './components/Drawer'
@@ -51,8 +52,11 @@ const Routing = () => {
         <Route path= "/createpost">
           <CreatePost />
         </Route>
-        <Route path= "/profile/:userid">
+        <Route exact path= "/profile/:userid">
           <UserProfile />
+        </Route>
+        <Route exact path= "/profile/post/:postedId">
+          <Posted />
         </Route>
         <Route path= "/myfollowingpost">
          <Subscriptions />

@@ -28,6 +28,86 @@ a {
   
 }
 
+#profilediv{
+  display:flex;
+  margin: 30px 30px 20px;
+}
+
+#profileimagediv{
+  margin: 0px 20px
+}
+#profileimage{
+  width: 160px;
+  height:160px;
+  border-radius:80px;
+}
+#profilename{
+  font-size: 2.28rem;
+}
+#profiletextdiv{
+  display: flex;
+  justify-content: space-between;
+  width: 108%;
+  margin:0px 10px 0px;
+
+}
+
+@media only screen and (max-width:495px){
+  #profileimage{
+   width: 130px;
+   height:130px;
+   border-radius:80px;
+  }
+  #profileimagediv{
+   margin: 0px 10px;
+  }
+  #profilediv{
+    margin: 10px 10px 10px
+  }
+  #profilename{
+    font-size: 1.7rem;
+  }
+
+  #profiletext{
+    font-size: 1rem
+  }
+
+  #profiletextdiv{
+    margin:0px 20px;
+  }
+ 
+   
+ }
+
+@media only screen and (max-width:438px){
+  #profileimage{
+   width: 110px;
+   height:110px;
+   border-radius:80px;
+  }
+  #profileimagediv{
+    margin: 0px 10px;
+   }
+  #profilediv{
+    margin: 10px 10px 10px
+  }
+  #profilename{
+    font-size: 1.5rem;
+  }
+
+  #profiletext{
+    font-size: 1rem;
+
+  }
+
+  #profiletextdiv{
+    margin:0px 20px;
+  }
+  
+   
+ }
+
+
 #bb{
   font-size: 20px;
 }
@@ -45,6 +125,9 @@ p {
 #prof{
   width: 100%;
 
+}
+#gallery-image{
+  margin-bottom: 10px;
 }
 #emailstate{
   color: red !important;

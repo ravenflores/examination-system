@@ -32,6 +32,17 @@ router.get('/getsubpost',requireLogin,(req,res) =>{
         console.log(err)
     })
 })
+router.get('/getpost/:id',requireLogin,(req,res) =>{
+    Post.find({_id:req.params.id})
+    .populate("postedBy","_id name")
+    .populate("comments.postedBy" ,"_id name")
+    .then(posts => {
+        res.json(posts) 
+    })
+    .catch(err => {
+        console.log(err)
+    })
+})
 
 router.post('/createpost',requireLogin,(req,res) => {
     console.log("eto :"+ JSON.stringify( req.body))

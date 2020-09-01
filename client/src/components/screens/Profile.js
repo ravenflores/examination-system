@@ -1,5 +1,6 @@
 import React,{useEffect,useState,useContext} from 'react'
 import { UserContext } from '../../App'
+import '../../App.css'
 import { Link,useHistory } from 'react-router-dom'
 import M from 'materialize-css'
 
@@ -85,6 +86,10 @@ function Profile() {
         
         
     }
+    const imageLink = (e) =>{
+        
+        history.push('/profile/post/'+e)
+    }
     return (
         <div style={{maxWidth:"550px",margin: "0px auto"}}>
             <div style = {{
@@ -93,26 +98,20 @@ function Profile() {
                 borderBottom: "1px solid grey"
             }}>
 
-            <div style = {{
-                display:"flex",
-                margin: "30px 30px 20px"
+            <div id="profilediv">
+                <div id="profileimagediv">
                 
-                
-            }}>
-                <div style={{
-                    margin: "0px 20px"
-                }}>
-                    <img style= {{width: "160px",height:"160px",borderRadius:"80px"}}
+                    <img id ="profileimage"
                     src={state?state.photo:"https://images.unsplash.com/photo-1522039553440-46d3e1e61e4a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"}
                     />
                     
                 </div>
                 <div >  
-                    <h4> {state?state.name:"loading"} </h4>
-                    <div style = {{display: "flex", justifyContent:"space-between",width:"108%",margin:"0px 10px 0px"}}>
-                    <h6>{mypics.length} post</h6>
-                    <h6>{state?state.followers.length:0} followers</h6>
-                    <h6>{state?state.following.length:0} following</h6> 
+                    <h4 id="profilename"> {state?state.name:"loading"} </h4>
+                    <div id="profiletextdiv" >
+                    <h6 id= "profiletext">{mypics.length} post</h6>
+                    <h6 id= "profiletext">{state?state.followers.length:0} followers</h6>
+                    <h6 id= "profiletext">{state?state.following.length:0} following</h6> 
 
                     </div>
                 </div>
@@ -121,7 +120,7 @@ function Profile() {
 
             <div className="file-field input-field" style ={{margin:"10px"}}>
                     <div className="btn #64b5f6 blue lighten-2">
-                        <span>Upload Image</span>
+                        <span>Upload Profile</span>
                         <input type="file" onChange={
                             
                             (e)=>setImage(e.target.files[0])
@@ -137,8 +136,8 @@ function Profile() {
                 {  
                     mypics.map(item => {
                         return(
-                            <img key={item._id} className = "item" src= {item.photo} />
-
+                             <img id="gallery-image" key={item._id} className = "item" src= {item.photo} onClick={()=>imageLink(item._id)} />
+                            
                         )
                     })
                 }
