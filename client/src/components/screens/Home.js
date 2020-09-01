@@ -164,7 +164,7 @@ function Home() {
     return (
         <div className="home">
             {
-                data.map(item => {
+                data.sort((a,b) => new Date(a.datePosted) < new Date(b.datePosted) ? 1 : -1  ).map(item => {
                     return(
                         <div className = "card home-card" key={item._id}>
                         <h5 style = {{padding:"6px"}}><Link to ={item.postedBy._id !== state._id ? "/profile/"+item.postedBy._id:"/profile/"}>{item.postedBy.name}</Link> {

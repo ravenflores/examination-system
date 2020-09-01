@@ -36,6 +36,7 @@ router.post('/signup',(req,res) => {
                 followers:[],
                 following:[],
                 photo
+                
             })
     
             user.save()

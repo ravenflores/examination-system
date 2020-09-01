@@ -40,7 +40,8 @@ router.post('/createpost',requireLogin,(req,res) => {
         title,
         body,
         photo:picture,
-        postedBy: req.user
+        postedBy: req.user,
+        datePosted:Date.now()
     })
 
     post.save().then(result => {
