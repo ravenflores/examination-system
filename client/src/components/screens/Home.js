@@ -166,6 +166,8 @@ function Home() {
     return (
         <div className="home">
             {
+
+
                 data.map(item => {
                     return(
                         <div className = "card home-card" key={item._id}>

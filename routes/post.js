@@ -10,6 +10,11 @@ router.get('/allpost',requireLogin,(req,res) =>{
     .populate("postedBy","_id name")
     .populate("comments.postedBy" ,"_id name")
     .then(posts => {
+        posts.sort(function(a,b){
+            // Turn your strings into dates, and then subtract them
+            // to get a value that is either negative, positive, or zero.
+            return new Date(b.datePosted) - new Date(a.datePosted);
+          });
         res.json(posts)
     })
     .catch(err => {
@@ -127,6 +132,7 @@ router.put('/comment',requireLogin,(req,res)=> {
             return res.status(422).json({error: err})
         }
         else{
+            console.log(result)
             res.json(result)
         }
     })
