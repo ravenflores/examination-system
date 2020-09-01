@@ -87,6 +87,7 @@ function Home() {
         })
     }
     const makeComment = (text,postId) => {
+        console.log(text.value)
         fetch("/comment",{
             method: "put",
             headers:{
@@ -94,12 +95,13 @@ function Home() {
                 "Authorization" : "Bearer "+ localStorage.getItem("jwt")
             },body: JSON.stringify({
                 postId,
-                text
+                text:text.value
 
             })
         }).then(res => res.json())
         .then(result => {
             console.log(result)
+            text.value = ""
             const newData  = data.map(item => {
                 if(item._id == result._id){
                     return result
@@ -132,8 +134,9 @@ function Home() {
         })
     }
     const deleteComment = (postId,commentId) => {
-        console.log(commentId)
-        fetch(`/deletecomment/${postId}/${commentId}`,{
+        handleClose()
+        console.log(comId)
+        fetch(`/deletecomment/${postId}/${comId}`,{
             method: "put",
             headers: {
                 "Content-Type":"application/json",
@@ -146,7 +149,6 @@ function Home() {
             const newData  = data.map(item => {
                 if(item._id == result._id){
                     console.log(state._id)
-                    console.log(result.comments.postedBy)
                     return result
                 }
                 else{
@@ -157,6 +159,8 @@ function Home() {
         })
         
     }
+
+
     return (
         <div className="home">
             {
