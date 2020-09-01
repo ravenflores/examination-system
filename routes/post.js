@@ -76,6 +76,11 @@ router.get("/mypost",requireLogin,(req,res) => {
     Post.find({postedBy:req.user._id})
     .populate("postedBy", "_id name")
     .then(mypost =>{
+        mypost.sort(function(a,b){
+            // Turn your strings into dates, and then subtract them
+            // to get a value that is either negative, positive, or zero.
+            return new Date(b.datePosted) - new Date(a.datePosted);
+          });
         res.json({mypost})
     })
     .catch((err) => {
