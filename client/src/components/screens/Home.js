@@ -21,7 +21,7 @@ function Home() {
             console.log(result)
             setData(result)
         })
-    },[])
+    },[])   
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 

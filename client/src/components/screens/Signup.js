@@ -128,7 +128,7 @@ function Login() {
                 />
                 <input
                 type="text"
-                placeholder="surname"
+                placeholder="lastname"
                 value = {surname}
                 onChange = {(e) =>setSurname(e.target.value)}
                 />
