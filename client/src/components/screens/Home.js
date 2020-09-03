@@ -21,7 +21,17 @@ function Home() {
         }).then(res => res.json())
         .then(result => {
             console.log(result)
-            setData(result)
+            const newData  = data.map(item => {
+                if(item._id == result._id){
+                    return result
+                }
+                else{
+                    return item
+                }
+            })
+            setData(newData)
+        }).catch(err =>{ 
+            console.log(err)
         })
     },[])   
 
@@ -150,7 +160,7 @@ function Home() {
         }).then(res => res.json())
         .then(result => {
         
-            // console.log(re)
+            console.log(result._id+"result")
             const newData  = data.map(item => {
                 if(item._id == result._id){
                     console.log(state._id)

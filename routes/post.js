@@ -20,6 +20,8 @@ router.get('/allpost',requireLogin,(req,res) =>{
     .catch(err => {
         console.log(err)
     })
+
+    
 })
 router.get('/getsubpost',requireLogin,(req,res) =>{
     Post.find({postedBy:{$in:req.user.following}})
