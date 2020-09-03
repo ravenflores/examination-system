@@ -10,6 +10,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Menu } from '@material-ui/icons';
 import {Link,useHistory} from 'react-router-dom'
 import { UserContext } from '../App'
@@ -108,7 +109,16 @@ export default function TemporaryDrawer() {
       </List>
       <Divider />
       <List>
-       
+      <ListItem id="log-out" className="btn #c62828 red darken-3"
+                onClick = {()=>{
+                  localStorage.clear()
+                  dispatch({type:"CLEAR"})
+                  history.push('/login')
+                }} 
+                >
+                <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+                <ListItemText primary="Log Out" />
+                </ListItem>
       </List>
     </div>
   );
