@@ -93,7 +93,8 @@ function Profile() {
     return (
         <div style={{maxWidth:"550px",margin: "0px auto"}}>
             <div style = {{
-                
+                display:"flex",
+                justifyContent:"space-around",
                 margin: "18px 0px",
                 borderBottom: "1px solid grey"
             }}>

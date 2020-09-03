@@ -94,18 +94,18 @@ function Profile() {
                 margin: "18px 0px",
                 borderBottom: "1px solid grey"
             }}>
-                <div>
-                    <img style= {{width: "160px",height:"160px",borderRadius:"80px"}}
-                    src="https://images.unsplash.com/photo-1522039553440-46d3e1e61e4a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"
+                <div id="profilediv">
+                <img id ="profileimage"
+                    src={userProfile.user?userProfile.user.photo:"https://images.unsplash.com/photo-1522039553440-46d3e1e61e4a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"}
                     />
                 </div>
                 <div >
-                    <h4> {userProfile.user.name} </h4>
+                    <h4 id="profilename"> {userProfile.user.name} </h4>
                     <h5> {userProfile.user.email} </h5>
-                    <div style = {{display: "flex", justifyContent:"space-between",width:"108%"}}>
-                    <h6>{userProfile.posts.length} posts</h6>
-                    <h6>{userProfile.user.followers.length} followers</h6>
-                    <h6>{userProfile.user.following.length} following</h6>
+                    <div id="profiletextdiv" >
+                    <h6 id= "profiletext">{userProfile.posts.length} posts</h6>
+                    <h6 id= "profiletext">{userProfile.user.followers.length} followers</h6>
+                    <h6 id= "profiletext">{userProfile.user.following.length} following</h6>
                     </div>
                     {
                         showFollow?
@@ -127,7 +127,7 @@ function Profile() {
                 {  
                     userProfile.posts.map(item => {
                         return(
-                            <img key={item._id} className = "item" src= {item.photo} />
+                            <img id="gallery-image" key={item._id} className = "item" src= {item.photo} />
 
                         )
                     })

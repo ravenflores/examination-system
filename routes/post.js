@@ -26,6 +26,11 @@ router.get('/getsubpost',requireLogin,(req,res) =>{
     .populate("postedBy","_id name")
     .populate("comments.postedBy" ,"_id name")
     .then(posts => {
+        posts.sort(function(a,b){
+            // Turn your strings into dates, and then subtract them
+            // to get a value that is either negative, positive, or zero.
+            return new Date(b.datePosted) - new Date(a.datePosted);
+          });
         res.json(posts) 
     })
     .catch(err => {
