@@ -115,7 +115,7 @@ a {
 .card-content #pp {
   margin: 15px !important;
 }
-p {
+#pp {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -187,4 +187,8 @@ p {
 
 .material-icons:hover{
   cursor: pointer;
+}
+
+#body{
+  display: inline-block;
 }

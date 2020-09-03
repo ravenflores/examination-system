@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import { Container } from '@material-ui/core';
 
 function Home() {
     const [data,setData] = useState([])
@@ -197,9 +197,10 @@ function Home() {
                             }
                           
                             
-                                <h6>{item.likes.length} likes</h6>
-                                <h6>{item.title}</h6>
-                                <p>{item.body}</p>
+                                <h6>{item.likes.length}{item.likes.length>1?" likes":" like"} </h6>
+                                <h5>{item.title}</h5>
+                                <p id="body">{item.body}</p>
+                                
                                 {
                                     item.comments.map(record => {
                                        
