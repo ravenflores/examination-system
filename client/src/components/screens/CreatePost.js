@@ -5,6 +5,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import { DesktopAccessDisabledSharp } from '@material-ui/icons';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
 
 function CreatePost() {
     const history = useHistory()
@@ -15,6 +18,7 @@ function CreatePost() {
     const [msgstats,setMsgstats] = useState(false)
     const [dstats,setDStats] = useState(true)
     const [msg,setMsg] = useState("")
+    
     const useStyles = makeStyles((theme) => ({
         root: {
           width: '100%',
@@ -22,9 +26,21 @@ function CreatePost() {
             marginTop: theme.spacing(2),
           },
         },
+        backdrop: {
+            zIndex: theme.zIndex.drawer + 1,
+            color: '#fff',
+          },
       }));
 
     const classes = useStyles();
+
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const handleToggle = () => {
+      setOpen(!open);
+    };
 
     const urlFetch = (url,e) => {
         fetch("/createpost",{
@@ -46,8 +62,10 @@ function CreatePost() {
                 
                 setMsg(data.error)
                 e.disabled = false
+                
             }
             else{
+                handleClose()
                 setMsg("Post Created!")
                 setMsgstats(true)
                 setTimeout(()=>{
@@ -60,7 +78,7 @@ function CreatePost() {
 
 
     const postCreate = (e) => {
-
+        handleToggle()
         console.log(e)
         e.disabled = true
         if(!title || !body){
@@ -97,6 +115,9 @@ function CreatePost() {
 
     return (
         <>
+        <Backdrop className={classes.backdrop} open={open}>
+             <CircularProgress color="inherit" />
+       </Backdrop>
         {msgstats?
          <div className={classes.root}>
          <Alert variant="filled" severity="success">
