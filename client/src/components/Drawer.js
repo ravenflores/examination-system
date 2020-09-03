@@ -109,7 +109,7 @@ export default function TemporaryDrawer() {
       </List>
       <Divider />
       <List>
-      <ListItem id="log-out" className="btn #c62828 red darken-3"
+      <ListItem button
                 onClick = {()=>{
                   localStorage.clear()
                   dispatch({type:"CLEAR"})
