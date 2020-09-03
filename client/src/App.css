@@ -120,6 +120,7 @@ a {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 390px;
+  min-height: 20px;
 }
 
 #prof{

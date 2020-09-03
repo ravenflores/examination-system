@@ -4,12 +4,15 @@ import {Link} from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { Container } from '@material-ui/core';
 
 function Home() {
     const [data,setData] = useState([])
     const {state,dispatch} =  useContext(UserContext)
     const [comment,setComment] = useState("")
     const [comId,setComId] = useState()
+    const [edit,setEdit] = useState("")
+    const [text,setText] = useState("")
     useEffect(() => {
         fetch('/getsubpost',{
             headers:{
@@ -20,8 +23,8 @@ function Home() {
             console.log(result)
             setData(result)
         })
-    },[])
-    
+    },[])   
+
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -31,6 +34,7 @@ function Home() {
     const handleClose = () => {
       setAnchorEl(null);
     };
+    
 
     const likePost = (id) =>{
         fetch('/like',{
@@ -116,6 +120,7 @@ function Home() {
         })
     }
 
+
     const deletePost = (postid) => {
         console.log(postid)
         fetch(`/deletepost/${postid}`,{
@@ -160,6 +165,51 @@ function Home() {
         
     }
 
+    const editComment = (e) => {
+
+        console.log(e)
+        setEdit("")
+        handleClose()
+        setEdit(e)
+    } 
+    const closeComment = () => {
+
+        setEdit("")
+    }
+
+    const updateComment = (e,postId) => {
+
+        console.log(e.target.id)
+        fetch(`/updatecomment/${postId}/${comId}`,{
+            method: "put",
+            headers: {
+                "Content-Type":"application/json",
+                "Authorization" : "Bearer "+localStorage.getItem("jwt")
+            },
+            body:JSON.stringify({
+                text
+            })
+        }).then(res => res.json())
+        .then(result => {
+        
+            // console.log(re)
+            const newData  = data.map(item => {
+                if(item._id == result._id){
+                    console.log(state._id)
+                    return result
+                }
+                else{
+                    return item
+                }
+            })
+             setEdit("")
+             setData(newData)
+        })
+
+    }
+
+    
+
 
     return (
         <div className="home">
@@ -195,27 +245,31 @@ function Home() {
                             }
                           
                             
-                          <h6>{item.likes.length}{item.likes.length>1?" likes":" like"} </h6>
+                                <h6>{item.likes.length}{item.likes.length>1?" likes":" like"} </h6>
                                 <h5>{item.title}</h5>
-                                <p id="body">{item.body}</p>
+                               <p id="body">{item.body}</p>
+                                
                                 {
                                     item.comments.map(record => {
                                        
                                         return (
-                                        <h6 key = {record._id}><span style = {{fontWeight:"700"}}> {record.postedBy.name} </span> <i style = {{float:"right"}}>
+                                        <h6 key = {record._id}><span style = {{fontWeight:"700"}}> {record.postedBy.name} </span> 
+                                        
+
+
+                                        {
+                                            record.postedBy._id == state._id && 
+                                            <i style = {{float:"right"}}>
                                         <Button size="small" aria-controls="simple-menu" aria-haspopup="true"  onClick={(e) => {
                                            
                                             handleClick(e)
                                             setComId(record._id)
+                                            closeComment()
+                                            setText(record.text)
+                                            
                                             }}>
                                             <a id= "bb">...</a>
                                         </Button>
-                                        </i>
-                                        <p id="pp">{record.text}</p>
-                                        
-                                        {
-                                            record.postedBy._id == state._id && 
-
                                         <Menu
                                             id="simple-menu"
                                             anchorEl={anchorEl}
@@ -224,12 +278,20 @@ function Home() {
                                             onClose={handleClose}
                                         >
                                             <MenuItem onClick={(e) => deleteComment(item._id,record._id)}>delete</MenuItem>
-                                            <MenuItem onClick={handleClose}>edit</MenuItem>
+                                            <MenuItem onClick={()=>editComment(comId)}>edit</MenuItem>
                                             
                                         </Menu>
+                                        </i>
+
+                                        
                                                 
                                         }
                                         
+                                        
+                                        {edit == record._id?<><textarea value={text} onChange={(e)=>setText(e.target.value)}></textarea><button  onClick={()=>closeComment()}>cancel</button> <button id={record._id} onClick={(e)=>updateComment(e,item._id)}>save</button> </>:<p id="pp">{record.text}</p>} 
+                                        
+                                        
+                            
                                         </h6>
                                         )
                                     })

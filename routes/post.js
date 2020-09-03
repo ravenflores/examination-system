@@ -201,6 +201,46 @@ router.put('/deletecomment/:postId/:commentId',requireLogin,(req,res) => {
  
 })
 
+router.put('/updatecomment/:postId/:commentId',requireLogin,(req,res) => {
+   console.log(req.body.text+"text")
+    console.log(req.params.commentId+"cmment")
+    Post.updateOne({_id:req.params.postId,"comments._id":req.params.commentId},{
+        $set:{"comments.$.text":req.body.text}
+    })
+    .exec((err,result)=>{
+        if(err){
+            console.log(err)
+            
+        }
+        else{
+            console.log(result)
+            
+        }
+    })
+
+    Post.findOne({_id:req.params.postId})
+    .populate("comments.postedBy","_id name")
+    .populate("postedBy","_id name")
+    .exec((err,result)=>{
+        if(err){
+            console.log(err)
+            return res.status(422).json({error: err})
+        }
+        else{
+            console.log(result)
+            res.json(result)
+        }
+    })
+   
+
+
+    
+   
+ 
+})
+
+
+
   
 
 module.exports = router
