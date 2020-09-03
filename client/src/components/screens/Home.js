@@ -11,6 +11,7 @@ function Home() {
     const {state,dispatch} =  useContext(UserContext)
     const [comment,setComment] = useState("")
     const [comId,setComId] = useState()
+    const [posId,setPostId] = useState()
     const [edit,setEdit] = useState("")
     const [text,setText] = useState("")
     useEffect(() => {
@@ -22,18 +23,14 @@ function Home() {
         .then(result => {
             console.log(result)
             setData(result)
-            const newData  = data.map(item => {
-                if(item._id == result._id){
-                    return result
-                }
-                else{
-                    return item
-                }
-            })
-            setData(newData)
+
+            
+ 
         }).catch(err =>{ 
             console.log(err)
         })
+      
+        
     },[])   
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -149,10 +146,10 @@ function Home() {
             setData (newData)
         })
     }
-    const deleteComment = (postId,commentId) => {
+    const deleteComment = () => {
         handleClose()
         console.log(comId)
-        fetch(`/deletecomment/${postId}/${comId}`,{
+        fetch(`/deletecomment/${posId}/${comId}`,{
             method: "put",
             headers: {
                 "Content-Type":"application/json",
@@ -160,17 +157,16 @@ function Home() {
             }
         }).then(res => res.json())
         .then(result => {
-        
-            console.log(result._id+"result")
+            console.log(result)
             const newData  = data.map(item => {
                 if(item._id == result._id){
-                    console.log(state._id)
                     return result
                 }
                 else{
                     return item
                 }
             })
+            console.log(newData)
              setData(newData)
         })
         
@@ -277,6 +273,7 @@ function Home() {
                                             setComId(record._id)
                                             closeComment()
                                             setText(record.text)
+                                            setPostId(item._id)
                                             
                                             }}>
                                             <a id= "bb">...</a>
@@ -288,7 +285,7 @@ function Home() {
                                             open={Boolean(anchorEl)}
                                             onClose={handleClose}
                                         >
-                                            <MenuItem onClick={(e) => deleteComment(item._id,record._id)}>delete</MenuItem>
+                                            <MenuItem onClick={(e) => deleteComment()}>delete</MenuItem>
                                             <MenuItem onClick={()=>editComment(comId)}>edit</MenuItem>
                                             
                                         </Menu>

@@ -7,8 +7,8 @@ const Post = mongoose.model("Post")
 
 router.get('/allpost',requireLogin,(req,res) =>{
     Post.find()
-    .populate("postedBy","_id name")
     .populate("comments.postedBy" ,"_id name")
+    .populate("postedBy","_id name")
     .then(posts => {
         posts.sort(function(a,b){
             // Turn your strings into dates, and then subtract them
@@ -23,6 +23,8 @@ router.get('/allpost',requireLogin,(req,res) =>{
 
     
 })
+
+
 router.get('/getsubpost',requireLogin,(req,res) =>{
     Post.find({postedBy:{$in:req.user.following}})
     .populate("postedBy","_id name")
@@ -182,6 +184,7 @@ router.delete('/deletepost/:postId',requireLogin,(req,res) => {
 router.put('/deletecomment/:postId/:commentId',requireLogin,(req,res) => {
  
     console.log(req.params.commentId)
+    console.log(req.params.postId)
     Post.findByIdAndUpdate({_id:req.params.postId},{
         $pull:{"comments":{"_id":req.params.commentId}}
     },{
