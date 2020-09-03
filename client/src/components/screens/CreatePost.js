@@ -59,7 +59,7 @@ function CreatePost() {
         .then(data =>{ 
             console.log(data.error)
             if(data.error){
-                
+                handleClose()
                 setMsg(data.error)
                 e.disabled = false
                 
@@ -78,7 +78,7 @@ function CreatePost() {
 
 
     const postCreate = (e) => {
-        handleToggle()
+        
         console.log(e)
         e.disabled = true
         if(!title || !body){
@@ -86,6 +86,7 @@ function CreatePost() {
            e.disabled = false
         }
         else{
+            handleToggle()
             const data = new FormData()
             data.append("file",image)
             data.append("upload_preset","project-instagram")
@@ -101,7 +102,7 @@ function CreatePost() {
             })
             .catch(err => {
     
-    
+                handleClose()
                 console.log(err)
                 return
             })
