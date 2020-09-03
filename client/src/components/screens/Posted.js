@@ -27,7 +27,7 @@ function Home() {
         })
     },[])
 
-    
+
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -205,9 +205,10 @@ function Home() {
                     return item
                 }
             })
-             setEdit("")
              setData(newData)
-        })
+            
+             
+        },setEdit(""))
 
     }
 

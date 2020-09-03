@@ -202,9 +202,10 @@ function Home() {
                     return item
                 }
             })
-             setEdit("")
              setData(newData)
-        })
+             
+            
+        }, setEdit(""))
 
     }
 

@@ -214,23 +214,25 @@ router.put('/updatecomment/:postId/:commentId',requireLogin,(req,res) => {
         }
         else{
             console.log(result)
+
+            Post.findOne({_id:req.params.postId})
+            .populate("comments.postedBy","_id name")
+            .populate("postedBy","_id name")
+            .exec((err,result)=>{
+                if(err){
+                    console.log(err)
+                    return res.status(422).json({error: err})
+                }
+                else{
+                    console.log(result)
+                    res.json(result)
+                }
+            })
             
         }
-    })
+    } )
 
-    Post.findOne({_id:req.params.postId})
-    .populate("comments.postedBy","_id name")
-    .populate("postedBy","_id name")
-    .exec((err,result)=>{
-        if(err){
-            console.log(err)
-            return res.status(422).json({error: err})
-        }
-        else{
-            console.log(result)
-            res.json(result)
-        }
-    })
+  
    
 
 
