@@ -3,6 +3,10 @@ import { UserContext } from '../../App'
 import '../../App.css'
 import { Link,useHistory } from 'react-router-dom'
 import M from 'materialize-css'
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 
 function Profile() {
   
@@ -11,6 +15,7 @@ function Profile() {
     const [image,setImage] = useState("")
     const [url,setUrl] = useState("")
     const history = useHistory()
+    
     console.log(state)
     useEffect(()=>{
     fetch('/mypost',{
@@ -30,6 +35,22 @@ function Profile() {
     }
     },[image])  
 
+    const useStyles = makeStyles((theme) => ({
+        backdrop: {
+          zIndex: theme.zIndex.drawer + 1,
+          color: '#fff',
+        },
+      }));
+
+      const classes = useStyles();
+      const [open, setOpen] = React.useState(false);
+      const handleClose = () => {
+        setOpen(false);
+      };
+      const handleToggle = () => {
+        setOpen(!open);
+      };
+
     const PostData =(pic) =>{
        
         fetch("/updateprofile",{
@@ -47,9 +68,11 @@ function Profile() {
         .then(data =>{
             if(data.error){
                 M.toast({html: data.error,classes:"#c62828 red darken-3"})
+                handleClose()
             }
             else{
-                M.toast({html:"Saved Successfully",classes:"#388e3c green darken-2"})
+                handleClose()
+                M.toast({html:"Profile Updated",classes:"#388e3c green darken-2"})
                 dispatch({type:"UPDATEIMAGE",payload:{photo:data.photo}})
                 localStorage.setItem("user",JSON.stringify(data))
                 console.log(data.photo)
@@ -60,6 +83,7 @@ function Profile() {
     
 
     const postDetails = () =>{
+        handleToggle()
         const data = new FormData()
         data.append("file",image)
         data.append("upload_preset","project-instagram")
@@ -76,7 +100,7 @@ function Profile() {
         })
         .catch(err => {
 
-
+            handleClose()
             console.log(err)
         })
         
@@ -90,11 +114,16 @@ function Profile() {
         
         history.push('/profile/post/'+e)
     }
+
+    
     return (
+        <>
+        <Backdrop className={classes.backdrop} open={open} >
+        <CircularProgress color="inherit" />
+        </Backdrop>
         <div style={{maxWidth:"550px",margin: "0px auto"}}>
             <div style = {{
-                display:"flex",
-                justifyContent:"space-around",
+                
                 margin: "18px 0px",
                 borderBottom: "1px solid grey"
             }}>
@@ -145,6 +174,7 @@ function Profile() {
               </div>
 
         </div>
+        </>
     )
 }
 
