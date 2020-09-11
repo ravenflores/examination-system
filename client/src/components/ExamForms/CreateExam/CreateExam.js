@@ -108,6 +108,7 @@ const accord = (classes, expanded, handleChange, register, part) => {
           Aliquam eget maximus est, id dignissim quam.
         </Typography>
         <TextField
+          size="small"
           required
           id="outlined-basic"
           label="Exam Name"
@@ -194,6 +195,7 @@ function CreateExam() {
   
                   <Box p={0} m={1} css={{ width: 200 }}>
                                 <Autocomplete
+                                  size="small"
                                   id="combo-box-demo"
                                   options={types}
                                   getOptionLabel={(types) => types.type}
@@ -202,6 +204,7 @@ function CreateExam() {
                                   type="text"
                                   renderInput={(params) => (
                                     <TextField
+                                      size="small"
                                       required
                                       {...params}
                                       label="Select Exam Types"
@@ -215,6 +218,7 @@ function CreateExam() {
                   </Box>
                   <Box p={0} m={1} css={{ width: 200 }}>
                       <TextField
+                        size="small"
                         required
                         id="outlined-basic"
                         label="Set number of Items"
@@ -227,6 +231,7 @@ function CreateExam() {
                 </Box>
                 <Box p={0} m={1} css={{ width: 200 }}>
                       <TextField
+                        size="small"
                         required
                         id="outlined-basic"
                         label="Set Points Per Item"
@@ -240,6 +245,7 @@ function CreateExam() {
                 
                 <Box p={0} m={1} css={{ width: 200 }}>
                                 <Autocomplete
+                                  size="small"
                                   id="combo-box-demo"
                                   options={difficulty}
                                   getOptionLabel={(difficulty) => difficulty.type}
@@ -248,6 +254,7 @@ function CreateExam() {
                                   type="text"
                                   renderInput={(params) => (
                                     <TextField
+                                      size="small"
                                       required
                                       {...params}
                                       label="difficulty"
@@ -261,6 +268,7 @@ function CreateExam() {
                   </Box>
                   <Box p={0} m={1} css={{ width: 400 }}>
                       <TextField
+                        size="small"
                         required
                         id="outlined-basic"
                         label="Set Instructions"
@@ -318,11 +326,12 @@ function CreateExam() {
                 variant="outlined"
                 inputRef={register}
                 fullWidth
+                size="small"
               />
             </Box>
             <Box p={0} m={1} css={{ width: 240 }}>
               <Autocomplete
-              
+                size="small"
                 id="combo-box-demo"
                 options={grades}
                 getOptionLabel={(grades) => grades.grade}
@@ -331,6 +340,7 @@ function CreateExam() {
                 type="text"
                 renderInput={(params) => (
                   <TextField
+                    size="small"
                     required
                     {...params}
                     label="Grade"
@@ -345,6 +355,7 @@ function CreateExam() {
 
             <Box p={0} m={1} css={{ width: 240 }}>
               <Autocomplete
+                size="small"
                 id="combo-box-demo"
                 options={sections}
                 getOptionLabel={(sections) => sections.section}
@@ -354,6 +365,7 @@ function CreateExam() {
                 type="text"
                 renderInput={(params) => (
                   <TextField
+                    size="small"
                     required
                     {...params}
                     label="Section"
@@ -367,6 +379,7 @@ function CreateExam() {
             </Box>
             <Box p={0} m={1} css={{ width: 240 }}>
               <TextField
+                size="small"
                 required
                 id="outlined-basic"
                 label="Duration Hrs"
@@ -379,6 +392,7 @@ function CreateExam() {
             </Box>
             <Box p={0} m={1} css={{ width: 240 }}>
               <TextField
+                size="small"
                 required
                 id="outlined-basic"
                 label="Duration Minutes"
@@ -403,8 +417,10 @@ function CreateExam() {
                     KeyboardButtonProps={{
                       "aria-label": "change date",
                     }}
+                    size="small"
                   />
                   <KeyboardTimePicker
+                    size="small"
                     margin="normal"
                     id="time-picker"
                     label="Time picker"
