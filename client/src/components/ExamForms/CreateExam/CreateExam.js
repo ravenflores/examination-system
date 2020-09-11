@@ -170,8 +170,8 @@ function CreateExam() {
     console.log(selectedDate)
     const newDynamicElem = (
         <>
-        
-          <Accordion>
+
+          <Accordion defaultExpanded={true}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -297,11 +297,13 @@ function CreateExam() {
  
   };
 
+  const onSubmit = (data, e) => console.log(data, e);
+  const onError = (errors, e) => alert("Form is invalid! \nPlease open Parts Accordion if you missed One \n" + e);
   
   useMountEffect(addElement)
   return (
     <>
-     <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>
+     <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)),onError)}>
      <Container>
       <div style={{ width: "100%" }}>
        
