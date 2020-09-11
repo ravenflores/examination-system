@@ -193,7 +193,7 @@ function CreateExam() {
                               alignContent="flex-start"
                             >
   
-                  <Box p={0} m={1} css={{ width: 200 }}>
+                  <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
                                 <Autocomplete
                                   size="small"
                                   id="combo-box-demo"
@@ -216,7 +216,7 @@ function CreateExam() {
                                   )}
                                 />
                   </Box>
-                  <Box p={0} m={1} css={{ width: 200 }}>
+                  <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
                       <TextField
                         size="small"
                         required
@@ -229,7 +229,7 @@ function CreateExam() {
                         inputRef={register}
                       />
                 </Box>
-                <Box p={0} m={1} css={{ width: 200 }}>
+                <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
                       <TextField
                         size="small"
                         required
@@ -243,7 +243,7 @@ function CreateExam() {
                       />
                 </Box>
                 
-                <Box p={0} m={1} css={{ width: 200 }}>
+                <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
                                 <Autocomplete
                                   size="small"
                                   id="combo-box-demo"
@@ -266,7 +266,7 @@ function CreateExam() {
                                   )}
                                 />
                   </Box>
-                  <Box p={0} m={1} css={{ width: 400 }}>
+                  <Box p={0} m={1} css={{ width: 400 }} flexGrow={1}>
                       <TextField
                         size="small"
                         required
@@ -312,11 +312,12 @@ function CreateExam() {
             bgcolor="background.paper"
             flexWrap="wrap"
             justifyContent="center"
-            alignItems="flex-start"
+            alignItems="flex-start" 
             alignContent="flex-start"
             css={{borderRadius:'6px'}}
+
           >
-            <Box p={0} m={1} css={{ width: 500 }}>
+            <Box p={0} m={1} css={{ width: 500 }}  flexGrow={1}>
               <TextField
                 required
                 id="outlined-basic"
@@ -329,13 +330,13 @@ function CreateExam() {
                 size="small"
               />
             </Box>
-            <Box p={0} m={1} css={{ width: 240 }}>
+            <Box p={0} m={1} css={{ width: 100 }}>
               <Autocomplete
                 size="small"
                 id="combo-box-demo"
                 options={grades}
                 getOptionLabel={(grades) => grades.grade}
-                style={{ width: 240 }}
+                style={{ width: 100 }}
                 name="Grade"
                 type="text"
                 renderInput={(params) => (
@@ -377,12 +378,20 @@ function CreateExam() {
                 )}
               />
             </Box>
-            <Box p={0} m={1} css={{ width: 240 }}>
+            <Box  css={{ width: 200 }} flexgrow={1}
+            display="flex"
+            flexDirection="row"
+            flexWrap="wrap"
+            justifyContent="center"
+            alignItems="flex-start" 
+            alignContent="flex-start"
+            >
+            <Box p={0} m={1} css={{ width: 80 }}  >
               <TextField
                 size="small"
                 required
                 id="outlined-basic"
-                label="Duration Hrs"
+                label="Hrs"
                 type="number"
                 name="Hrs"
                 variant="outlined"
@@ -390,12 +399,12 @@ function CreateExam() {
                 inputRef={register}
               />
             </Box>
-            <Box p={0} m={1} css={{ width: 240 }}>
+            <Box p={0} m={1} css={{ width: 80 }} >
               <TextField
                 size="small"
                 required
                 id="outlined-basic"
-                label="Duration Minutes"
+                label="Mins"
                 type="number"
                 name="Mins"
                 variant="outlined"
@@ -403,14 +412,26 @@ function CreateExam() {
                 inputRef={register}
               />
             </Box>
-            <Box p={0} m={1} css={{ width: 500 }}>
+            </Box>
+
+            <Box  css={{ width: 340 }} flexgrow={1}
+            display="flex"
+            flexDirection="row"
+            flexWrap="wrap"
+            justifyContent="center"
+            alignItems="flex-start" 
+            alignContent="flex-start">
+            <Box p={0} m={1} css={{ width: 150 }} flexgrow={1}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justify="space-around">
+              
                   <KeyboardDatePicker
-                    margin="normal"
+                    margin="none"
+                    width="150px"
                     id="date-picker-dialog"
                     label="Date picker dialog"
                     format="MM/dd/yyyy"
+                    name="date"
+                    type="text"
                     value={selectedDate}
                     inputRef={register}
                     onChange={handleDateChange}
@@ -418,21 +439,35 @@ function CreateExam() {
                       "aria-label": "change date",
                     }}
                     size="small"
+                    style={{width:"150px"}}
                   />
-                  <KeyboardTimePicker
+                
+               
+
+                
+              </MuiPickersUtilsProvider>
+            </Box><Box p={0} m={1} css={{ width: 150 }} flexgrow={1} >
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            
+              <KeyboardTimePicker
                     size="small"
-                    margin="normal"
+                    margin="none"
+                    width="150px"
                     id="time-picker"
                     label="Time picker"
+                    name="time"
+                    type="text"
                     value={selectedDate}
                     onChange={handleDateChange}
                     inputRef={register}
                     KeyboardButtonProps={{
                       "aria-label": "change time",
                     }}
-                  />
-                </Grid>
+                    style={{width:"150px"}}
+                />
+          
               </MuiPickersUtilsProvider>
+            </Box>
             </Box>
           </Box>
         
