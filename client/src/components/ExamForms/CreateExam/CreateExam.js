@@ -30,6 +30,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Icon from '@material-ui/core/Icon';
 import { getDate } from "date-fns";
 import moment from 'moment';
+import Fab from '@material-ui/core/Fab';
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
@@ -74,6 +75,14 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(1),
+  },
+  fab: {
+    '& > *': {
+      margin: theme.spacing(1),
+      position: 'fixed',
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
+    },
   },
 }));
 
@@ -136,6 +145,8 @@ function CreateExam() {
     }
   }, [dynamicParts]);
 
+  
+
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -150,7 +161,7 @@ function CreateExam() {
     return;
   }, [parts]);
 
-
+  const useMountEffect = (fun) => useEffect(fun, [])
 
   const addElement = () => {
     // Creates the dynamic paragraph
@@ -277,10 +288,14 @@ function CreateExam() {
  
   };
 
+  
+  useMountEffect(addElement)
   return (
     <>
+     <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>
+     <Container>
       <div style={{ width: "100%" }}>
-        <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>
+       
           <Box
             display="flex"
             flexDirection="row"
@@ -291,6 +306,7 @@ function CreateExam() {
             justifyContent="center"
             alignItems="flex-start"
             alignContent="flex-start"
+            css={{borderRadius:'6px'}}
           >
             <Box p={0} m={1} css={{ width: 500 }}>
               <TextField
@@ -406,32 +422,47 @@ function CreateExam() {
         
 
       <div className={classes.acc}>
-        
+      <Box 
+      display="flex"
+      flexDirection="row"
+      p={1}
+      m={1}
+      flexWrap="wrap"
+      justifyContent="center"
+      alignItems="flex-start"
+      alignContent="flex-start">
         <Button
         variant="contained"
         color="default"
         className={classes.button}
         startIcon={<AddIcon />}
         onClick={() =>
-          addElement(classes, expanded, handleChange, register, parts)
+          addElement()
         }
       >
         Add Parts
       </Button>
+      </Box>
         {dynamicParts}
       </div>
-      <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              endIcon={<Icon>send</Icon>}
-              style={{marginLeft:'90%'}}
-              type="submit"
-            >
-              Submit
-         </Button>
-        </form>
+      <Box 
+      display="flex"
+      flexDirection="row"
+      p={1}
+      m={1}
+      flexWrap="wrap"
+      justifyContent="center"
+      alignItems="flex-start"
+      alignContent="flex-start">
+      <Fab color="primary" aria-label="add" type="submit" >
+          <SaveIcon />
+        </Fab>
+      </Box>
+         
+       
       </div>
+      </Container>
+      </form>
     </>
   );
 }

@@ -198,15 +198,9 @@ function TeacherDashboard(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Container>
         <CreateExam />
-        </Container>
          
-          <div className={classes.fab}>
-        <Fab color="primary" aria-label="add" >
-          <AddIcon />
-        </Fab>
-      </div>
+         
       </main>
     </div>
         </>
