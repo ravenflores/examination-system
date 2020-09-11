@@ -3,13 +3,13 @@ import React from 'react'
 export const initialState = null
 
 export const reducer = (state,action) => {
-    if (action.type =="USER"){
+    if (action.type ==="USER"){
         return action.payload
     }
-    if (action.type == "CLEAR"){
+    if (action.type === "CLEAR"){
         return null
     }
-    if (action.type == "UPDATE"){
+    if (action.type === "UPDATE"){
         return {
             ...state,
             followers:action.payload.followers,
@@ -17,7 +17,7 @@ export const reducer = (state,action) => {
             
         }
     }
-    if (action.type == "UPDATEIMAGE"){
+    if (action.type === "UPDATEIMAGE"){
         return {
             ...state,
             photo:action.payload.photo

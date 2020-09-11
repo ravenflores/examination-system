@@ -1,19 +1,11 @@
 import React,{useEffect,createContext,useReducer,useContext} from 'react'
 import Navbar from './components/Navbar'
 import {BrowserRouter, Route,Switch,useHistory} from 'react-router-dom'
-import Home from './components/screens/Home'
-import Login from './components/screens/Login'
-import Profile from './components/screens/Profile'
-import Signup from './components/screens/Signup'
-import CreatePost from './components/screens/CreatePost'
-import UserProfile from './components/screens/UserProfile'
-import Posted from './components/screens/Posted'
-import Subscriptions from './components/screens/Subscriptions'
+import Home from './components/ExamForms/Homepage/Home'
+import TeacherSignUp from './components/ExamForms/SignUpForms/Teacher'
+import TeacherDashboard from './components/ExamForms/Dashboard/Teacher'
 import {reducer,initialState} from './reducers/userReducer'
-import TemporaryDrawer from './components/Drawer'
-import RecipeReviewCard from './components/Card'
-import SimpleAlerts from './components/Alert'
-
+import './App.css'
 
 
 
@@ -23,44 +15,37 @@ const Routing = () => {
   const history = useHistory()
   const{state,dispatch} = useContext(UserContext)
   useEffect(()=>{
+    const position =  JSON.parse( localStorage.getItem("position"))
     const user =  JSON.parse( localStorage.getItem("user"))
     
-    
-    console.log(user)
-    if(user){
-      dispatch({type:"USER",payload:user})
-      
 
-    }
-    else{
-      history.push('/login')
-    }                                                                                                                                                                                                                                                                                                                                                                   
+    console.log(position)
+    
+      if(user){
+        dispatch({type:"USER",payload:user})
+        history.push('/teacher/dashboard')
+      }
+      else{
+        if(position=="teacher")
+        {
+          history.push('/teacher')
+        }
+        else {
+          history.push('/')
+        }
+      }
+                                                                                                                                                                                                                                                                                                                                                                   
   },[])
   return(
     <Switch>
         <Route exact path= "/">
           <Home />
         </Route>
-        <Route path= "/login">
-          <Login />
+        <Route exact path= "/teacher">
+          <TeacherSignUp />
         </Route>
-        <Route path= "/signup">
-          <Signup />
-        </Route>
-        <Route exact path= "/profile">
-          <Profile />
-        </Route>
-        <Route path= "/createpost">
-          <CreatePost />
-        </Route>
-        <Route exact path= "/profile/:userid">
-          <UserProfile />
-        </Route>
-        <Route exact path= "/profile/post/:postedId">
-          <Posted />
-        </Route>
-        <Route path= "/myfollowingpost">
-         <Subscriptions />
+        <Route exact path= "/teacher/dashboard">
+          <TeacherDashboard />
         </Route>
     </Switch>
     )
@@ -73,8 +58,13 @@ function App() {
   <UserContext.Provider value= {{state,dispatch}}>
 
     <BrowserRouter>
-    <Navbar />
 
+
+
+
+
+
+    {/* <Navbar /> */}
     {/* <SimpleAlerts /> */}
     <Routing />
     {/* <RecipeReviewCard /> */}

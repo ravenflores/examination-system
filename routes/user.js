@@ -31,7 +31,7 @@ router.get('/user/:id',requireLogin,(req,res)=>{
                
            })
        }).catch(err =>{
-           return res.status(404).json({error:"user not found"})
+           return res.status(404).json({error:"User not found"})
        })
    
     

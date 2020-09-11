@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"name": "project-instagram",
+			"path": "..\\..\\..\\..\\..\\..\\..\\project-instagram"
+		},
+		{
+			"name": "project-gatsby",
+			"path": "..\\..\\..\\..\\..\\..\\..\\project-gatsby\\project-gatsby"
+		},
+		{
+			"name": "project-examination",
+			"path": "..\\..\\..\\..\\..\\.."
+		},
+		{
+			"path": "..\\..\\..\\..\\..\\..\\..\\project-react-hooks"
+		}
+	],
+	"settings": {}
+}

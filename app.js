@@ -9,12 +9,14 @@ const port = process.env.PORT || 5000
 //user-admin
 //user-pass
 require ('./models/user')
-require ('./models/post')
+// require ('./models/post')
+require ('./models/teachers')
+require ('./models/students')
 
 app.use(express.json())
 app.use(require('./routes/auth'))
-app.use(require('./routes/post'))
-app.use(require('./routes/user'))
+// app.use(require('./routes/post'))
+// app.use(require('./routes/user'))
 
 mongoose.connect(MONGOURI,{
     useNewUrlParser: true,

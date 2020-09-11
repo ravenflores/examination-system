@@ -1,0 +1,468 @@
+import React, { useState, useCallback, useEffect } from "react";
+import Box from "@material-ui/core/Box";
+import { useForm } from "react-hook-form";
+
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import { makeStyles } from "@material-ui/core/styles";
+
+import TextField from "@material-ui/core/TextField";
+import { Container } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+
+import Grid from "@material-ui/core/Grid";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { setDayOfYear } from "date-fns/fp";
+//icons
+import SaveIcon from '@material-ui/icons/Save';
+import AddIcon from '@material-ui/icons/Add';
+import Icon from '@material-ui/core/Icon';
+import { getDate } from "date-fns";
+import moment from 'moment';
+const useStyles = makeStyles((theme) => ({
+  root: {
+    minWidth: 275,
+  },
+  bullet: {
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+  container: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  text: {
+    color: "blue",
+  },
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    // border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  acc: {
+    width: "100%",
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    flexBasis: "33.33%",
+    flexShrink: 0,
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
+
+const accord = (classes, expanded, handleChange, register, part) => {
+  return (
+    <Accordion
+      expanded={expanded === "panel1"}
+      onChange={handleChange("panel1")}
+    >
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls="panel1bh-content"
+        id="panel1bh-header"
+      >
+        <Typography className={classes.heading}>Part 1</Typography>
+        <Typography className={classes.secondaryHeading}>
+          Multiple Choice
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Typography>
+          Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
+          Aliquam eget maximus est, id dignissim quam.
+        </Typography>
+        <TextField
+          required
+          id="outlined-basic"
+          label="Exam Name"
+          name={part}
+          type="text"
+          variant="outlined"
+          inputRef={register}
+          fullWidth
+        />
+      </AccordionDetails>
+    </Accordion>
+  );
+};
+
+
+function CreateExam() {
+  const classes = useStyles();
+  const [parts, setParts] = useState(0);
+  const [dynamicParts, setDynamicParts] = useState([]);
+  const [dynamicTypes, setDynamicTypes] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString());
+  const [expanded, setExpanded] = useState(false);
+  const [partNum, setPartNum] = useState(1);
+  const { register, handleSubmit, errors } = useForm();
+
+  const handleClick = useCallback(() => {
+    setParts(parts + 1);
+    console.log("Clicked!");
+  }, [parts]);
+
+  useEffect(() => {
+    if (setDynamicParts) {
+      console.log("eto");
+      console.log(dynamicParts);
+    }
+  }, [dynamicParts]);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : true);
+  };
+  
+
+  const addEl = useCallback(() => {
+    if (setDynamicParts) console.log("Clicked!");
+    return;
+  }, [parts]);
+
+
+
+  const addElement = () => {
+    // Creates the dynamic paragraph
+   if(partNum <= 10) {
+    console.log(selectedDate)
+    const newDynamicElem = (
+        <>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography className={classes.heading}>Part {partNum}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+               
+                  <div style={{ width: "100%" }}>
+                            <Box
+                              display="flex"
+                              flexDirection="row"
+                              p={1}
+                              m={1}
+                              bgcolor="background.paper"
+                              flexWrap="wrap"
+                              justifyContent="center"
+                              alignItems="flex-start"
+                              alignContent="flex-start"
+                            >
+  
+                  <Box p={0} m={1} css={{ width: 200 }}>
+                                <Autocomplete
+                                  id="combo-box-demo"
+                                  options={types}
+                                  getOptionLabel={(types) => types.type}
+                                  style={{ width: 200 }}
+                                  name="Grade"
+                                  type="text"
+                                  renderInput={(params) => (
+                                    <TextField
+                                      required
+                                      {...params}
+                                      label="Select Exam Types"
+                                      name="partExamType"
+                                      type="text"
+                                      inputRef={register}
+                                      variant="outlined"
+                                    />
+                                  )}
+                                />
+                  </Box>
+                  <Box p={0} m={1} css={{ width: 200 }}>
+                      <TextField
+                        required
+                        id="outlined-basic"
+                        label="Set number of Items"
+                        type="number"
+                        name="partNoOfItems"
+                        variant="outlined"
+                        fullWidth
+                        inputRef={register}
+                      />
+                </Box>
+                <Box p={0} m={1} css={{ width: 200 }}>
+                      <TextField
+                        required
+                        id="outlined-basic"
+                        label="Set Points Per Item"
+                        type="number"
+                        name="partPointsPerItem"
+                        variant="outlined"
+                        fullWidth
+                        inputRef={register}
+                      />
+                </Box>
+                
+                <Box p={0} m={1} css={{ width: 200 }}>
+                                <Autocomplete
+                                  id="combo-box-demo"
+                                  options={difficulty}
+                                  getOptionLabel={(difficulty) => difficulty.type}
+                                  style={{ width: 200 }}
+                                  name="Grade"
+                                  type="text"
+                                  renderInput={(params) => (
+                                    <TextField
+                                      required
+                                      {...params}
+                                      label="difficulty"
+                                      name="difficulty"
+                                      type="text"
+                                      inputRef={register}
+                                      variant="outlined"
+                                    />
+                                  )}
+                                />
+                  </Box>
+                  <Box p={0} m={1} css={{ width: 400 }}>
+                      <TextField
+                        required
+                        id="outlined-basic"
+                        label="Set Instructions"
+                        type="number"
+                        name="partSetInstructions"
+                        variant="outlined"
+                        multiline
+                        fullWidth
+                        inputRef={register}
+                      />
+                </Box>
+                  </Box>
+                  </div>
+            </AccordionDetails>
+          </Accordion>
+        </>
+      );
+      // adds it to the state
+      setDynamicParts(() => [...dynamicParts, newDynamicElem]);
+      setPartNum(partNum+1)
+    } else {
+     alert("Maximum Parts Reached!")
+   }
+    
+ 
+  };
+
+  return (
+    <>
+      <div style={{ width: "100%" }}>
+        <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>
+          <Box
+            display="flex"
+            flexDirection="row"
+            p={1}
+            m={1}
+            bgcolor="background.paper"
+            flexWrap="wrap"
+            justifyContent="center"
+            alignItems="flex-start"
+            alignContent="flex-start"
+          >
+            <Box p={0} m={1} css={{ width: 500 }}>
+              <TextField
+                required
+                id="outlined-basic"
+                label="Exam Name"
+                name="examname"
+                type="text"
+                variant="outlined"
+                inputRef={register}
+                fullWidth
+              />
+            </Box>
+            <Box p={0} m={1} css={{ width: 240 }}>
+              <Autocomplete
+              
+                id="combo-box-demo"
+                options={grades}
+                getOptionLabel={(grades) => grades.grade}
+                style={{ width: 240 }}
+                name="Grade"
+                type="text"
+                renderInput={(params) => (
+                  <TextField
+                    required
+                    {...params}
+                    label="Grade"
+                    name="Grade"
+                    type="text"
+                    inputRef={register}
+                    variant="outlined"
+                  />
+                )}
+              />
+            </Box>
+
+            <Box p={0} m={1} css={{ width: 240 }}>
+              <Autocomplete
+                id="combo-box-demo"
+                options={sections}
+                getOptionLabel={(sections) => sections.section}
+                style={{ width: 240 }}
+                inputRef={register}
+                name="Section"
+                type="text"
+                renderInput={(params) => (
+                  <TextField
+                    required
+                    {...params}
+                    label="Section"
+                    name="Section"
+                    type="text"
+                    inputRef={register}
+                    variant="outlined"
+                  />
+                )}
+              />
+            </Box>
+            <Box p={0} m={1} css={{ width: 240 }}>
+              <TextField
+                required
+                id="outlined-basic"
+                label="Duration Hrs"
+                type="number"
+                name="Hrs"
+                variant="outlined"
+                fullWidth
+                inputRef={register}
+              />
+            </Box>
+            <Box p={0} m={1} css={{ width: 240 }}>
+              <TextField
+                required
+                id="outlined-basic"
+                label="Duration Minutes"
+                type="number"
+                name="Mins"
+                variant="outlined"
+                fullWidth
+                inputRef={register}
+              />
+            </Box>
+            <Box p={0} m={1} css={{ width: 500 }}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid container justify="space-around">
+                  <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    label="Date picker dialog"
+                    format="MM/dd/yyyy"
+                    value={selectedDate}
+                    inputRef={register}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                  <KeyboardTimePicker
+                    margin="normal"
+                    id="time-picker"
+                    label="Time picker"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    inputRef={register}
+                    KeyboardButtonProps={{
+                      "aria-label": "change time",
+                    }}
+                  />
+                </Grid>
+              </MuiPickersUtilsProvider>
+            </Box>
+          </Box>
+        
+
+      <div className={classes.acc}>
+        
+        <Button
+        variant="contained"
+        color="default"
+        className={classes.button}
+        startIcon={<AddIcon />}
+        onClick={() =>
+          addElement(classes, expanded, handleChange, register, parts)
+        }
+      >
+        Add Parts
+      </Button>
+        {dynamicParts}
+      </div>
+      <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              endIcon={<Icon>send</Icon>}
+              style={{marginLeft:'90%'}}
+              type="submit"
+            >
+              Submit
+         </Button>
+        </form>
+      </div>
+    </>
+  );
+}
+
+const grades = [
+  { grade: "7",id: 1},
+  { grade: "8",id: 2},
+  { grade: "9",id: 2},
+ ]
+const sections = [
+  { section: "Queen Of Heaven",id: 7},
+  { section: "Queen Of Prophets",id: 8},
+  { section: "Queen Of Love",id:9},
+  
+ ]
+
+const types = [
+  { type: "Multiple Choice",id: 1},
+  { type: "Identification",id:2},
+  { type: "True or False",id:3},
+  { type: "Photo Guess",id:4},
+  { type: "Enumeration",id:5},
+  { type: "Essay",id:6},
+ ]
+
+ const difficulty = [
+  { type: "Easy",id: 1},
+  { type: "Medium",id:2},
+  { type: "Hard",id:3},
+  { type: "Very Hard",id:4},
+  
+ ]
+
+export default CreateExam;

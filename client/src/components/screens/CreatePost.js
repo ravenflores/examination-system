@@ -83,7 +83,7 @@ function CreatePost() {
         console.log(e)
         e.disabled = true
         if(!title || !body){
-           setMsg("please add all the field")
+           setMsg("Please add all the field")
            e.disabled = false
         }
         else{
