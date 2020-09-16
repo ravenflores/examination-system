@@ -27,6 +27,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CancelIcon from "@material-ui/icons/Cancel";
 
+import CardHeader from '@material-ui/core/CardHeader';
+
 import InputFieldsText from "./InputFields";
 
 export function PartsDetails({ children, partNum, setParts }) {
@@ -282,20 +284,15 @@ export function PartsDetails({ children, partNum, setParts }) {
                 return (
                   <>
                   <Card className={classes.card} variant="outlined">
-                  <Box
-                    key={partNum + "div3"}
-                    display="flex"
-                      flexDirection="row"
-                      p={1}
-                      m={1}
-                      bgcolor="background.paper"
-                      flexWrap="wrap"
-                      justifyContent="flex-end"
-                      alignItems="flex-end"
-                      alignContent="flex-end"
-                   >
-                     <Button variant="contained" onClick={() => remove(index)}>DELETE</Button>
-                  </Box>
+                  <CardHeader
+                        
+                        action={
+                          <Button variant="contained" onClick={() => remove(index)}>DELETE</Button>
+                        }
+                        title={""+(index+1)}
+                        // subheader="September 14, 2016"
+                      />
+                  
                     {Array.isArray(children)
                       ? children.map((child) => {
                           return child.props.name //if there a name props will be passed else di magiinput props sa baba
