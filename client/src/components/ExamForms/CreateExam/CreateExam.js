@@ -198,7 +198,7 @@ const handlePart = () =>{
             css={{borderRadius:'6px'}}
 
           >
-            <Box p={0} m={1} css={{ width: 500 }}  flexGrow={1}>
+            <Box p={0} m={1} css={{ width: 400 }}  flexGrow={1}>
               <TextField
                 required
                 id="outlined-basic"

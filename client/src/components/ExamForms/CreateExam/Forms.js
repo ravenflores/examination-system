@@ -32,18 +32,16 @@ import CardHeader from '@material-ui/core/CardHeader';
 import InputFieldsText from "./InputFields";
 
 export function PartsDetails({ children, partNum, setParts }) {
-  const methods = useForm({
+  const { register, control, handleSubmit, reset, watch } = useForm({
     defaultValues: {
-      test: [{ test: "raven" }],
-    },
+      test: [{ test: "raven" }]
+    }
   });
-
-  const control = methods.control;
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
       control,
-      name: "test",
+      name: "questions"
     }
   );
   const useStyles = makeStyles((theme) => ({
@@ -159,10 +157,10 @@ export function PartsDetails({ children, partNum, setParts }) {
   };
 
   
-  const onSubmit = (data) => alert(JSON.stringify(methods.watch()));
+  const onSubmit = (data) => alert(JSON.stringify(watch()));
 
   return (
-    <form onSubmit={methods.handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Card className={classes.root} variant="outlined">
         <CardContent>
           <Box
@@ -204,9 +202,9 @@ export function PartsDetails({ children, partNum, setParts }) {
                                     required
                                     {...params}
                                     label="Select Exam Types"
-                                    name={partNum+"examTypes"}
+                                    name={"examTypes"}
                                     type="text"
-                                    inputRef={methods.register}
+                                    inputRef={register()}
                                     variant="outlined"
                                   />
                                 )}
@@ -219,10 +217,10 @@ export function PartsDetails({ children, partNum, setParts }) {
                       id="outlined-basic"
                       label="Set number of Items"
                       type="number"
-                      name= {partNum+"partNoOfItems"}
+                      name= {"partNoOfItems"}
                       variant="outlined"
                       fullWidth
-                      inputRef={methods.register}
+                      inputRef={register()}
                     />
               </Box>
               <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
@@ -232,10 +230,10 @@ export function PartsDetails({ children, partNum, setParts }) {
                       id="outlined-basic"
                       label="Set Points Per Item"
                       type="number"
-                      name={partNum+"partPointsPerItem"}
+                      name={"partPointsPerItem"}
                       variant="outlined"
                       fullWidth
-                      inputRef={methods.register}
+                      inputRef={register()}
                     />
               </Box>
               
@@ -254,9 +252,9 @@ export function PartsDetails({ children, partNum, setParts }) {
                                     required
                                     {...params}
                                     label="difficulty"
-                                    name={partNum+"difficulty"}
+                                    name={"difficulty"}
                                     type="text"
-                                    inputRef={methods.register}
+                                    inputRef={register()}
                                     variant="outlined"
                                   />
                                 )}
@@ -273,43 +271,43 @@ export function PartsDetails({ children, partNum, setParts }) {
                     variant="outlined"
                     multiline
                     fullWidth
-                    inputRef={methods.register}
+                    inputRef={register()}
                   />
                 </Box>
               </Box>
             </div>
 
             <div style={{ width: "100%" }} key={partNum + "div2"}>
-              {fields.map((item, index) => {
+            {fields.map((item, index) => {
                 return (
-                  <>
-                  <Card className={classes.card} variant="outlined">
-                  <CardHeader
-                        
-                        action={
-                          <Button variant="contained" onClick={() => remove(index)}>DELETE</Button>
-                        }
-                        title={""+(index+1)}
-                        // subheader="September 14, 2016"
-                      />
-                  
-                    {Array.isArray(children)
-                      ? children.map((child) => {
-                          return child.props.name //if there a name props will be passed else di magiinput props sa baba
-                            ? React.createElement(child.type, {
-                                ...{
-                                  ...child.props,
-                                  register: methods.register,
-                                  index: index,
-                                  control: control,
-                                  key: child.props.name,
-                                },
-                              })
-                            : child;
-                        })
-                      : children}
-                    </Card>
-                  </>
+                  <div key={item.id}>
+                     <Card className={classes.card} name={`questions[${index}].card`} variant="outlined">
+                      <CardHeader
+                            
+                            action={
+                              <Button variant="contained" onClick={() => remove(index)}>DELETE</Button>
+                            }
+                            title={""+(index+1)}
+                            // subheader="September 14, 2016"
+                          />
+                      
+                        {Array.isArray(children)
+                          ? children.map((child) => {
+                              return child.props.name //if there a name props will be passed else di magiinput props sa baba
+                                ? React.createElement(child.type, {
+                                    ...{
+                                      ...child.props,
+                                      register: () =>register(),
+                                      index: index,
+                                      control: control,
+                                      key: child.props.name,
+                                    },
+                                  })
+                                : child;
+                            })
+                          : children}
+                    </Card> 
+                  </div>
                 );
               })}
             </div>
@@ -335,7 +333,7 @@ export function PartsDetails({ children, partNum, setParts }) {
             className={classes.button}
             >Add</Button>
               <Button  onClick={() =>
-                  methods.reset({
+                  reset({
                     test: [{ test: "raven" }],
                   })
                 }
@@ -384,7 +382,7 @@ export function MultipleChoice({ register, name, control, index, ...rest }) {
             size="small"
             required
             id="outlined-basic"
-            inputRef={register}
+            inputRef={register()}
             label="question"
             type="text"
             variant="outlined"
@@ -408,7 +406,7 @@ export function MultipleChoice({ register, name, control, index, ...rest }) {
                   variant="outlined"
                   label="answer"
                   style={{width:'50%'}}
-                  inputRef={register}
+                  inputRef={register()}
                   margin='dense'
 
                 />
@@ -419,7 +417,7 @@ export function MultipleChoice({ register, name, control, index, ...rest }) {
                   variant="outlined"
                   label="choice1"
                   fullWidth
-                  inputRef={register}
+                  inputRef={register()}
                   style={{width:'50%'}}
                   margin='dense'
                   
@@ -431,7 +429,7 @@ export function MultipleChoice({ register, name, control, index, ...rest }) {
                   variant="outlined"
                   label="choice2"
                   fullWidth
-                  inputRef={register}
+                  inputRef={register()}
                   style={{width:'50%'}}
                   margin='dense'
                 />
@@ -442,7 +440,7 @@ export function MultipleChoice({ register, name, control, index, ...rest }) {
                   variant="outlined"
                   label="choice3"
                   fullWidth
-                  inputRef={register}
+                  inputRef={register()}
                   style={{width:'50%'}}
                   margin='dense'
                 />
