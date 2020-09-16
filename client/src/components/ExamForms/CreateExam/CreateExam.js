@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect,useRef } from "react";
 import Box from "@material-ui/core/Box";
 import { useForm } from "react-hook-form";
 
@@ -10,6 +10,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Container } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import Divider from '@material-ui/core/Divider';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 
 import Grid from "@material-ui/core/Grid";
 import DateFnsUtils from "@date-io/date-fns";
@@ -31,9 +35,14 @@ import Icon from '@material-ui/core/Icon';
 import { getDate } from "date-fns";
 import moment from 'moment';
 import Fab from '@material-ui/core/Fab';
+
+//component
+import Parts from './Parts'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
+    marginTop: 20,
   },
   bullet: {
     display: "inline-block",
@@ -84,229 +93,98 @@ const useStyles = makeStyles((theme) => ({
       right: theme.spacing(2),
     },
   },
+  details: {
+    verticalAlign: 'middle'
+  }
 }));
 
-const accord = (classes, expanded, handleChange, register, part) => {
-  return (
-    <Accordion
-      expanded={expanded === "panel1"}
-      onChange={handleChange("panel1")}
-    >
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1bh-content"
-        id="panel1bh-header"
-      >
-        <Typography className={classes.heading}>Part 1</Typography>
-        <Typography className={classes.secondaryHeading}>
-          Multiple Choice
-        </Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <Typography>
-          Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-          Aliquam eget maximus est, id dignissim quam.
-        </Typography>
-        <TextField
-          size="small"
-          required
-          id="outlined-basic"
-          label="Exam Name"
-          name={part}
-          type="text"
-          variant="outlined"
-          inputRef={register}
-          fullWidth
-        />
-      </AccordionDetails>
-    </Accordion>
-  );
-};
+
+
 
 
 function CreateExam() {
   const classes = useStyles();
-  const [parts, setParts] = useState(0);
-  const [dynamicParts, setDynamicParts] = useState([]);
-  const [dynamicTypes, setDynamicTypes] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString());
-  const [expanded, setExpanded] = useState(false);
-  const [partNum, setPartNum] = useState(1);
   const { register, handleSubmit, errors } = useForm();
-
-  const handleClick = useCallback(() => {
-    setParts(parts + 1);
-    console.log("Clicked!");
-  }, [parts]);
-
-  useEffect(() => {
-    if (setDynamicParts) {
-      console.log("eto");
-      console.log(dynamicParts);
-    }
-  }, [dynamicParts]);
-
-  
-
+  const [examId,setExamId] = useState()
+  const [partStatus,setPartStatus] = useState(false)
+  const onSubmit = (data, e) => console.log(data, e);
+  const onError = (errors, e) => alert("Form is invalid! \nPlease open Parts Accordion if you missed One \n" + e);
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : true);
-  };
+
+  const saveExam = (data) =>
+{
+if(examId){
+  console.log("meron")
   
+}
+else{
+  console.log("wala")
 
-  const addEl = useCallback(() => {
-    if (setDynamicParts) console.log("Clicked!");
-    return;
-  }, [parts]);
 
-  const useMountEffect = (fun) => useEffect(fun, [])
+  fetch("/createexam",{
+    method:"post",  
+    headers:{
+        "Content-Type": "application/json",
+        "Authorization":"Bearer "+localStorage.getItem("jwt")
+    },
+    body:JSON.stringify({   
+      examname:data.examname,
+      grade: data.grade,
+      section: data.section,
+      durationhrs: data.durationhrs,
+      durationmins: data.durationmins,
+      date: selectedDate,
 
-  const addElement = () => {
-    // Creates the dynamic paragraph
-   if(partNum <= 10) {
-    console.log(selectedDate)
-    const newDynamicElem = (
-        <>
+    })
+}).then(res => res.json())
+.then(data =>{ 
+    console.log(data.error)
+    if(data.error){
+        alert(data.error)
+        
+    }
+    else{
+       
+        alert("Exam Created!")
+        console.log(data.exam._id)
+        setExamId(data.exam._id)
 
-          <Accordion defaultExpanded={true}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography className={classes.heading}>Part {partNum}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-               
-                  <div style={{ width: "100%" }}>
-                            <Box
-                              display="flex"
-                              flexDirection="row"
-                              p={1}
-                              m={1}
-                              bgcolor="background.paper"
-                              flexWrap="wrap"
-                              justifyContent="center"
-                              alignItems="flex-start"
-                              alignContent="flex-start"
-                            >
-  
-                  <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
-                                <Autocomplete
-                                  size="small"
-                                  id="combo-box-demo"
-                                  options={types}
-                                  getOptionLabel={(types) => types.type}
-                                  style={{ width: 200 }}
-                                  name="Grade"
-                                  type="text"
-                                  renderInput={(params) => (
-                                    <TextField
-                                      size="small"
-                                      required
-                                      {...params}
-                                      label="Select Exam Types"
-                                      name="partExamType"
-                                      type="text"
-                                      inputRef={register}
-                                      variant="outlined"
-                                    />
-                                  )}
-                                />
-                  </Box>
-                  <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
-                      <TextField
-                        size="small"
-                        required
-                        id="outlined-basic"
-                        label="Set number of Items"
-                        type="number"
-                        name="partNoOfItems"
-                        variant="outlined"
-                        fullWidth
-                        inputRef={register}
-                      />
-                </Box>
-                <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
-                      <TextField
-                        size="small"
-                        required
-                        id="outlined-basic"
-                        label="Set Points Per Item"
-                        type="number"
-                        name="partPointsPerItem"
-                        variant="outlined"
-                        fullWidth
-                        inputRef={register}
-                      />
-                </Box>
-                
-                <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
-                                <Autocomplete
-                                  size="small"
-                                  id="combo-box-demo"
-                                  options={difficulty}
-                                  getOptionLabel={(difficulty) => difficulty.type}
-                                  style={{ width: 200 }}
-                                  name="Grade"
-                                  type="text"
-                                  renderInput={(params) => (
-                                    <TextField
-                                      size="small"
-                                      required
-                                      {...params}
-                                      label="difficulty"
-                                      name="difficulty"
-                                      type="text"
-                                      inputRef={register}
-                                      variant="outlined"
-                                    />
-                                  )}
-                                />
-                  </Box>
-                  <Box p={0} m={1} css={{ width: 400 }} flexGrow={1}>
-                      <TextField
-                        size="small"
-                        required
-                        id="outlined-basic"
-                        label="Set Instructions"
-                        type="number"
-                        name="partSetInstructions"
-                        variant="outlined"
-                        multiline
-                        fullWidth
-                        inputRef={register}
-                      />
-                </Box>
-                  </Box>
-                  </div>
-            </AccordionDetails>
-          </Accordion>
-        </>
-      );
-      // adds it to the state
-      setDynamicParts(() => [...dynamicParts, newDynamicElem]);
-      setPartNum(partNum+1)
-    } else {
-     alert("Maximum Parts Reached!")
-   }
-    
- 
-  };
+        
+    }
+})
+}
+}
 
-  const onSubmit = (data, e) => console.log(data, e);
-  const onError = (errors, e) => alert("Form is invalid! \nPlease open Parts Accordion if you missed One \n" + e);
-  
-  useMountEffect(addElement)
+useEffect(() => {
+  if (setPartStatus) {
+    console.log("eto");
+    console.log(partStatus);
+  }
+}, [partStatus]);
+
+const handlePart = () =>{
+  if(partStatus){
+    setPartStatus(false)
+  }
+  else{
+    setPartStatus(true)
+  }
+
+}
+
   return (
     <>
-     <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)),onError)}>
+    
      <Container>
+
       <div style={{ width: "100%" }}>
-       
+      <form onSubmit={handleSubmit((data) => saveExam(data))} >
+      <Card className={classes.root} variant="outlined">
+      <CardContent>
           <Box
             display="flex"
             flexDirection="row"
@@ -340,7 +218,6 @@ function CreateExam() {
                 options={grades}
                 getOptionLabel={(grades) => grades.grade}
                 style={{ width: 100 }}
-                name="Grade"
                 type="text"
                 renderInput={(params) => (
                   <TextField
@@ -348,7 +225,7 @@ function CreateExam() {
                     required
                     {...params}
                     label="Grade"
-                    name="Grade"
+                    name="grade"
                     type="text"
                     inputRef={register}
                     variant="outlined"
@@ -373,7 +250,7 @@ function CreateExam() {
                     required
                     {...params}
                     label="Section"
-                    name="Section"
+                    name="section"
                     type="text"
                     inputRef={register}
                     variant="outlined"
@@ -396,7 +273,7 @@ function CreateExam() {
                 id="outlined-basic"
                 label="Hrs"
                 type="number"
-                name="Hrs"
+                name="durationhrs"
                 variant="outlined"
                 fullWidth
                 inputRef={register}
@@ -409,7 +286,7 @@ function CreateExam() {
                 id="outlined-basic"
                 label="Mins"
                 type="number"
-                name="Mins"
+                name="durationmins"
                 variant="outlined"
                 fullWidth
                 inputRef={register}
@@ -473,7 +350,8 @@ function CreateExam() {
             </Box>
             </Box>
           </Box>
-        
+      </CardContent>
+      </Card>
 
       <div className={classes.acc}>
       <Box 
@@ -490,33 +368,24 @@ function CreateExam() {
         color="default"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={() =>
-          addElement()
-        }
+        onClick={()=>handlePart()}
       >
         Add Parts
       </Button>
       </Box>
-        {dynamicParts}
       </div>
-      <Box 
-      display="flex"
-      flexDirection="row"
-      p={1}
-      m={1}
-      flexWrap="wrap"
-      justifyContent="center"
-      alignItems="flex-start"
-      alignContent="flex-start">
-      <Fab color="primary" aria-label="add" type="submit" >
-          <SaveIcon />
-        </Fab>
-      </Box>
-         
-       
-      </div>
-      </Container>
+
+      
       </form>
+      {
+        partStatus? <Parts part= {true} setParts={()=>handlePart()} /> : <Parts part= {false} />
+      }
+     
+      
+     
+      </div>
+      </Container>  
+      
     </>
   );
 }
