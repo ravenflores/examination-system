@@ -41,12 +41,13 @@ export function PartsDetails({ children, partNum, setParts }) {
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
       control,
-      name: "questions"
+      name: "questions",
+      
     }
   );
   const useStyles = makeStyles((theme) => ({
     root: {
-      minWidth: 275,
+      width: 'auto',
     },
     bullet: {
       display: "inline-block",
@@ -157,7 +158,7 @@ export function PartsDetails({ children, partNum, setParts }) {
   };
 
   
-  const onSubmit = (data) => alert(JSON.stringify(watch()));
+  const onSubmit = (data) => console.log(watch());
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -166,8 +167,6 @@ export function PartsDetails({ children, partNum, setParts }) {
           <Box
             display="flex"
             flexDirection="row"
-            p={1}
-            m={1}
             bgcolor="background.paper"
             flexWrap="wrap"
             justifyContent="center"
@@ -176,11 +175,10 @@ export function PartsDetails({ children, partNum, setParts }) {
             css={{ borderRadius: "6px" }}
           >
             <div style={{ width: "100%" }} key={partNum + "div"}>
+            <Card className={classes.card} variant="outlined">
               <Box
                 display="flex"
                 flexDirection="row"
-                p={1}
-                m={1}
                 bgcolor="background.paper"
                 flexWrap="wrap"
                 justifyContent="center"
@@ -189,16 +187,16 @@ export function PartsDetails({ children, partNum, setParts }) {
               >
                 <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
                               <Autocomplete
-                                size="small"
+                                size="medium"
                                 id="combo-box-demo"
                                 options={types}
                                 getOptionLabel={(types) => types.type}
-                                style={{ width: 200 }}
+                                style={{ width: 'auto' }}
                                 name="Grade"
                                 type="text"
                                 renderInput={(params) => (
                                   <TextField
-                                    size="small"
+                                    size="medium"
                                     required
                                     {...params}
                                     label="Select Exam Types"
@@ -212,7 +210,7 @@ export function PartsDetails({ children, partNum, setParts }) {
                 </Box>
                 <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
                     <TextField
-                      size="small"
+                      size="medium"
                       required
                       id="outlined-basic"
                       label="Set number of Items"
@@ -225,7 +223,7 @@ export function PartsDetails({ children, partNum, setParts }) {
               </Box>
               <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
                     <TextField
-                      size="small"
+                      size="medium"
                       required
                       id="outlined-basic"
                       label="Set Points Per Item"
@@ -239,16 +237,16 @@ export function PartsDetails({ children, partNum, setParts }) {
               
               <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
                               <Autocomplete
-                                size="small"
+                                size="medium"
                                 id="combo-box-demo"
                                 options={difficulty}
                                 getOptionLabel={(difficulty) => difficulty.type}
-                                style={{ width: 200 }}
+                                style={{ width: 'auto' }}
                                 name="Grade"
                                 type="text"
                                 renderInput={(params) => (
                                   <TextField
-                                    size="small"
+                                    size="medium"
                                     required
                                     {...params}
                                     label="difficulty"
@@ -262,7 +260,7 @@ export function PartsDetails({ children, partNum, setParts }) {
                 </Box>
                 <Box p={0} m={1} css={{ width: 400 }} flexGrow={1}>
                   <TextField
-                    size="small"
+                    size="medium"
                     required
                     id="outlined-basic"
                     label="Instructions"
@@ -275,6 +273,7 @@ export function PartsDetails({ children, partNum, setParts }) {
                   />
                 </Box>
               </Box>
+            </Card>
             </div>
 
             <div style={{ width: "100%" }} key={partNum + "div2"}>
@@ -298,7 +297,10 @@ export function PartsDetails({ children, partNum, setParts }) {
                                     ...{
                                       ...child.props,
                                       register: () =>register(),
+                                      fields:fields,
                                       index: index,
+                                      append:() =>append(),
+                                      remove:() =>remove(),
                                       control: control,
                                       key: child.props.name,
                                     },
@@ -361,7 +363,7 @@ export function PartsDetails({ children, partNum, setParts }) {
   );
 }
 
-export function MultipleChoice({ register, name, control, index, ...rest }) {
+export function MultipleChoice({ register, name,fields, index,remove,append, ...rest }) {
   const useStyles = makeStyles((theme) => ({
     root: {
       width: "inherit",
@@ -369,7 +371,20 @@ export function MultipleChoice({ register, name, control, index, ...rest }) {
   }));
   const classes = useStyles();
   const [value, setValue] = React.useState("female");
+  const {control} = useForm({
+    defaultValues: {
+      questions: [{ choices:[{ choice: "tet" }] }]
+      //questions[${index}].choices[${indexx}].choice
+    }
+  });
 
+  const a = useFieldArray(
+    {
+      control,
+      name: "questions",
+      
+    }
+    )
   const handleChange = (event) => {
     setValue(event.target.value);
   };
@@ -379,7 +394,7 @@ export function MultipleChoice({ register, name, control, index, ...rest }) {
         <CardContent style={{width:'inherit'}}>
           <TextField
             name={`questions[${index}].question`}
-            size="small"
+            size="medium"
             required
             id="outlined-basic"
             inputRef={register()}
@@ -390,62 +405,53 @@ export function MultipleChoice({ register, name, control, index, ...rest }) {
             {...rest} // make sure to set up defaultValue
           />
 
-          <div style={{marginTop:'20px',width:'inherit'}}>
-            <FormControl component="fieldset" style={{width:'inherit'}}>
-              <RadioGroup
-                aria-label="gender"
-                name="gender1"
-                value={value}
-                onChange={handleChange}
-                row
-              >
-                <InputFieldsText
-                  size="small"
+          <div style={{width:'inherit'}}>
+                 <InputFieldsText
+                  size="medium"
                   required
                   name={`questions[${index}].answer`}
                   variant="outlined"
                   label="answer"
-                  style={{width:'50%'}}
+                  fullWidth
                   inputRef={register()}
                   margin='dense'
 
                 />
-                <InputFieldsText
-                  size="small"
-                  required
-                  name={`questions[${index}].choice1`}
-                  variant="outlined"
-                  label="choice1"
-                  fullWidth
-                  inputRef={register()}
-                  style={{width:'50%'}}
-                  margin='dense'
-                  
-                />
-                <InputFieldsText
-                  size="small"
-                  required
-                  name={`questions[${index}].choice2`}
-                  variant="outlined"
-                  label="choice2"
-                  fullWidth
-                  inputRef={register()}
-                  style={{width:'50%'}}
-                  margin='dense'
-                />
-                <InputFieldsText
-                  size="small"
-                  required
-                  name={`questions[${index}].choice3`}
-                  variant="outlined"
-                  label="choice3"
-                  fullWidth
-                  inputRef={register()}
-                  style={{width:'50%'}}
-                  margin='dense'
-                />
-              </RadioGroup>
-            </FormControl>
+                {a.fields.map((items, indexx) => {
+                return (
+                  <div key={items.id} style={{display:'flex'}}>
+                     <div style={{width:'55%'}}>
+                        <InputFieldsText
+                          size="medium"
+                          required
+                          name={`questions[${index}].choices[${indexx}].choice`}
+                          variant="outlined"
+                          label={`choice ${indexx+1}`}
+                          fullWidth
+                          inputRef={register()}
+                          margin='dense'
+                          
+                        />
+                      </div>
+                      <div style={{width:'45%'}}>
+                        {a.fields.length==indexx+1?
+                        <><Button onClick={() => a.append()}
+                        variant="contained"
+                        color="secondary"   
+                        className='parts-btn2'
+                        >Add</Button>
+                        <Button className='parts-btn1' variant="contained" onClick={() => a.remove(indexx)}>DELETE</Button>
+                        </>:<Button className='parts-btn12' variant="contained" onClick={() => a.remove(indexx)}>DELETE</Button>
+                        }
+                      
+                      
+                      </div>
+                  </div>
+                   
+                );
+              })}
+                
+            
           </div>
         </CardContent>
     </>

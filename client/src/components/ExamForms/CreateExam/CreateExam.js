@@ -40,9 +40,10 @@ import Fab from '@material-ui/core/Fab';
 import Parts from './Parts'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    minWidth: 275,
-    marginTop: 20,
+  root: { 
+    height: 'max-content',
+    margin: '20 auto',
+    
   },
   bullet: {
     display: "inline-block",
@@ -179,7 +180,6 @@ const handlePart = () =>{
   return (
     <>
     
-     <Container>
 
       <div style={{ width: "100%" }}>
       <form onSubmit={handleSubmit((data) => saveExam(data))} >
@@ -208,12 +208,12 @@ const handlePart = () =>{
                 variant="outlined"
                 inputRef={register}
                 fullWidth
-                size="small"
+                size="medium"
               />
             </Box>
             <Box p={0} m={1} css={{ width: 100 }}>
               <Autocomplete
-                size="small"
+                size="medium"
                 id="combo-box-demo"
                 options={grades}
                 getOptionLabel={(grades) => grades.grade}
@@ -221,7 +221,7 @@ const handlePart = () =>{
                 type="text"
                 renderInput={(params) => (
                   <TextField
-                    size="small"
+                    size="medium"
                     required
                     {...params}
                     label="Grade"
@@ -236,7 +236,7 @@ const handlePart = () =>{
 
             <Box p={0} m={1} css={{ width: 240 }}>
               <Autocomplete
-                size="small"
+                size="medium"
                 id="combo-box-demo"
                 options={sections}
                 getOptionLabel={(sections) => sections.section}
@@ -246,7 +246,7 @@ const handlePart = () =>{
                 type="text"
                 renderInput={(params) => (
                   <TextField
-                    size="small"
+                    size="medium"
                     required
                     {...params}
                     label="Section"
@@ -268,7 +268,7 @@ const handlePart = () =>{
             >
             <Box p={0} m={1} css={{ width: 80 }}  >
               <TextField
-                size="small"
+                size="medium"
                 required
                 id="outlined-basic"
                 label="Hrs"
@@ -281,7 +281,7 @@ const handlePart = () =>{
             </Box>
             <Box p={0} m={1} css={{ width: 80 }} >
               <TextField
-                size="small"
+                size="medium"
                 required
                 id="outlined-basic"
                 label="Mins"
@@ -318,7 +318,7 @@ const handlePart = () =>{
                     KeyboardButtonProps={{
                       "aria-label": "change date",
                     }}
-                    size="small"
+                    size="medium"
                     style={{width:"150px"}}
                   />
                 
@@ -330,7 +330,7 @@ const handlePart = () =>{
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
             
               <KeyboardTimePicker
-                    size="small"
+                    size="medium"
                     margin="none"
                     width="150px"
                     id="time-picker"
@@ -384,7 +384,6 @@ const handlePart = () =>{
       
      
       </div>
-      </Container>  
       
     </>
   );

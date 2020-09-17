@@ -79,3 +79,23 @@ body {
 #input {
   visibility: hidden !important;
 }
+
+.parts-btn1 {
+  float: right;
+  margin-top: 10px !important;
+}
+.parts-btn12 {
+  float: right;
+  margin-top: 10px !important;
+  margin-right: 69px !important;
+}
+.parts-btn2 {
+  float: right;
+  margin-top: 10px !important;
+  margin-left: 5px !important;
+  margin-bottom: 10px !important;
+}
+
+.MuiCardContent-root {
+  padding: 10px !important;
+}
