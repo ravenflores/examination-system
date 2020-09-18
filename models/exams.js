@@ -27,5 +27,9 @@ const userSchema = new mongoose.Schema({
         type:Date,
         required: true,
     },
+    createdBy:[{
+        type:ObjectId,
+        ref: "User"
+    }],
 })
 mongoose.model("Exams",userSchema)

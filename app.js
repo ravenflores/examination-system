@@ -10,9 +10,14 @@ const port = process.env.PORT || 5000
 //user-pass
 require ('./models/user')
 // require ('./models/post')
+//auth
 require ('./models/teachers')
 require ('./models/students')
+
+//exams
 require ('./models/exams')
+require ('./models/parts')
+require ('./models/items')
 
 app.use(express.json())
 app.use(require('./routes/auth'))

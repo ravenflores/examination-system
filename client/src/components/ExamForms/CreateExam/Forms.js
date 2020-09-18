@@ -34,7 +34,7 @@ import InputFieldsText from "./InputFields";
 export function PartsDetails({ children, partNum, setParts }) {
   const { register, control, handleSubmit, reset, watch } = useForm({
     defaultValues: {
-      test: [{ test: "raven" }]
+      questions: [{ card: 'test'}]
     }
   });
 
@@ -419,7 +419,7 @@ export function MultipleChoice({ register, name,fields, index,remove,append, ...
                 />
                 {a.fields.map((items, indexx) => {
                 return (
-                  <div key={items.id} style={{display:'flex'}}>
+                  <div key={items.id} name={index} style={{display:'flex'}}>
                      <div style={{width:'55%'}}>
                         <InputFieldsText
                           size="medium"
@@ -434,22 +434,22 @@ export function MultipleChoice({ register, name,fields, index,remove,append, ...
                         />
                       </div>
                       <div style={{width:'45%'}}>
-                        {a.fields.length==indexx+1?
-                        <><Button onClick={() => a.append()}
+                        <Button className='parts-btn1' variant="contained" onClick={() => a.remove(indexx)}>DELETE</Button>
+                        
+                        
+                      </div>
+                  </div>
+                  
+                   
+                );
+              })}
+              <div>
+                       <Button onClick={() => a.append()}
                         variant="contained"
                         color="secondary"   
                         className='parts-btn2'
                         >Add</Button>
-                        <Button className='parts-btn1' variant="contained" onClick={() => a.remove(indexx)}>DELETE</Button>
-                        </>:<Button className='parts-btn12' variant="contained" onClick={() => a.remove(indexx)}>DELETE</Button>
-                        }
-                      
-                      
-                      </div>
-                  </div>
-                   
-                );
-              })}
+              </div>
                 
             
           </div>

@@ -14,28 +14,28 @@ export const UserContext = createContext()
 const Routing = () => {
   const history = useHistory()
   const{state,dispatch} = useContext(UserContext)
-  useEffect(()=>{
-    const position =  JSON.parse( localStorage.getItem("position"))
-    const user =  JSON.parse( localStorage.getItem("user"))
+  // useEffect(()=>{
+  //   const position =  JSON.parse( localStorage.getItem("position"))
+  //   const user =  JSON.parse( localStorage.getItem("user"))
     
 
-    console.log(position)
+  //   console.log(position)
     
-      if(user){
-        dispatch({type:"USER",payload:user})
-        history.push('/teacher/dashboard')
-      }
-      else{
-        if(position=="teacher")
-        {
-          history.push('/teacher')
-        }
-        else {
-          history.push('/')
-        }
-      }
+  //     if(user){
+  //       dispatch({type:"USER",payload:user})
+  //       history.push('/teacher/dashboard')
+  //     }
+  //     else{
+  //       if(position=="teacher")
+  //       {
+  //         history.push('/teacher')
+  //       }
+  //       else {
+  //         history.push('/')
+  //       }
+  //     }
                                                                                                                                                                                                                                                                                                                                                                    
-  },[])
+  // },[])
   return(
     <Switch>
         <Route exact path= "/">
