@@ -23,28 +23,19 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Box from "@material-ui/core/Box";
 import Fab from "@material-ui/core/Fab";
 import SaveIcon from "@material-ui/icons/Save";
+import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CancelIcon from "@material-ui/icons/Cancel";
-
 import CardHeader from '@material-ui/core/CardHeader';
+import MultipleChoice from './Types';
 
-import InputFieldsText from "./InputFields";
-
-export function PartsDetails({ children, partNum, setParts }) {
-  const { register, control, handleSubmit, reset, watch } = useForm({
-    defaultValues: {
-      questions: [{ card: 'test'}]
-    }
+export default function PartsDetails({ control, register, setValue,partNum, getValues }) {
+  const { fields, append, remove, prepend } = useFieldArray({
+    control,
+    name: "questions"
   });
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      control,
-      name: "questions",
-      
-    }
-  );
   const useStyles = makeStyles((theme) => ({
     root: {
       width: 'auto',
@@ -151,17 +142,8 @@ export function PartsDetails({ children, partNum, setParts }) {
     { type: "Very Hard", id: 4 },
   ];
 
-  const [value, setValue] = React.useState("female");
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-
-  
-  const onSubmit = (data) => console.log(watch());
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
       <Card className={classes.root} variant="outlined">
         <CardContent>
           <Box
@@ -289,25 +271,8 @@ export function PartsDetails({ children, partNum, setParts }) {
                             title={""+(index+1)}
                             // subheader="September 14, 2016"
                           />
-                      
-                        {Array.isArray(children)
-                          ? children.map((child) => {
-                              return child.props.name //if there a name props will be passed else di magiinput props sa baba
-                                ? React.createElement(child.type, {
-                                    ...{
-                                      ...child.props,
-                                      register: () =>register(),
-                                      fields:fields,
-                                      index: index,
-                                      append:() =>append(),
-                                      remove:() =>remove(),
-                                      control: control,
-                                      key: child.props.name,
-                                    },
-                                  })
-                                : child;
-                            })
-                          : children}
+                       <MultipleChoice nestIndex={index} {...{ control, register }} />
+                        
                     </Card> 
                   </div>
                 );
@@ -327,23 +292,17 @@ export function PartsDetails({ children, partNum, setParts }) {
                 alignContent="flex-start"
             >
 
-              
-            
-            <Button onClick={() => appen(0)}
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            >Add</Button>
-              <Button  onClick={() =>
-                  reset({
-                    test: [{ test: "raven" }],
-                  })
-                }
-                
+           
+            <Button
               variant="contained"
-              color="default"
+              color="secondary"
               className={classes.button}
-                >Reset</Button> 
+              onClick={() => append()}
+              startIcon={<AddIcon />}
+            >
+              Add Parts
+            </Button>
+            
             <Button
               variant="contained"
               color="primary"
@@ -359,105 +318,6 @@ export function PartsDetails({ children, partNum, setParts }) {
           </Box>
         </CardContent>
       </Card>
-    </form>
+   
   );
-}
-
-export function MultipleChoice({ register, name,fields, index,remove,append, ...rest }) {
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      width: "inherit",
-    },
-  }));
-  const classes = useStyles();
-  const [value, setValue] = React.useState("female");
-  const {control} = useForm({
-    defaultValues: {
-      questions: [{ choices:[{ choice: "tet" }] }]
-      //questions[${index}].choices[${indexx}].choice
-    }
-  });
-
-  const a = useFieldArray(
-    {
-      control,
-      name: "questions",
-      
-    }
-    )
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-  return (
-    <>
-      
-        <CardContent style={{width:'inherit'}}>
-          <TextField
-            name={`questions[${index}].question`}
-            size="medium"
-            required
-            id="outlined-basic"
-            inputRef={register()}
-            label="question"
-            type="text"
-            variant="outlined"
-            fullWidth
-            {...rest} // make sure to set up defaultValue
-          />
-
-          <div style={{width:'inherit'}}>
-                 <InputFieldsText
-                  size="medium"
-                  required
-                  name={`questions[${index}].answer`}
-                  variant="outlined"
-                  label="answer"
-                  fullWidth
-                  inputRef={register()}
-                  margin='dense'
-
-                />
-                {a.fields.map((items, indexx) => {
-                return (
-                  <div key={items.id} name={index} style={{display:'flex'}}>
-                     <div style={{width:'55%'}}>
-                        <InputFieldsText
-                          size="medium"
-                          required
-                          name={`questions[${index}].choices[${indexx}].choice`}
-                          variant="outlined"
-                          label={`choice ${indexx+1}`}
-                          fullWidth
-                          inputRef={register()}
-                          margin='dense'
-                          
-                        />
-                      </div>
-                      <div style={{width:'45%'}}>
-                        <Button className='parts-btn1' variant="contained" onClick={() => a.remove(indexx)}>DELETE</Button>
-                        
-                        
-                      </div>
-                  </div>
-                  
-                   
-                );
-              })}
-              <div>
-                       <Button onClick={() => a.append()}
-                        variant="contained"
-                        color="secondary"   
-                        className='parts-btn2'
-                        >Add</Button>
-              </div>
-                
-            
-          </div>
-        </CardContent>
-    </>
-  );
-}
-
-export function Input({ register, name, ...rest }) {
-  return <input name={name} ref={register} id="input" {...rest} />;
 }

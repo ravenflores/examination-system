@@ -153,6 +153,7 @@ else{
         alert("Exam Created!")
         console.log(data.exam._id)
         setExamId(data.exam._id)
+        handlePart()
 
         
     }
@@ -164,6 +165,7 @@ useEffect(() => {
   if (setPartStatus) {
     console.log("eto");
     console.log(partStatus);
+    
   }
 }, [partStatus]);
 
@@ -368,7 +370,7 @@ const handlePart = () =>{
         color="default"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={()=>handlePart()}
+        type="submit"
       >
         Add Parts
       </Button>
@@ -378,7 +380,7 @@ const handlePart = () =>{
       
       </form>
       {
-        partStatus? <Parts part= {true} setParts={()=>handlePart()} /> : <Parts part= {false} />
+        partStatus? <Parts part= {true} examId={examId} setParts={()=>handlePart()} /> : <Parts part= {false} />
       }
      
       
