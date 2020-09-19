@@ -30,7 +30,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import CardHeader from '@material-ui/core/CardHeader';
 import MultipleChoice from './Types';
 
-export default function PartsDetails({ control, register, setValue,partNum, getValues }) {
+export default function PartsDetails({ control, register, setValue,partNum, getValues, watch }) {
   const { fields, append, remove, prepend } = useFieldArray({
     control,
     name: "questions"
@@ -104,16 +104,46 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
 
   const appen = (times) => {
     console.log(times);
+    console.log(Number(fields.length));
+    if(times > fields.length){
+      if(times <= 20){
+        let a = (times - Number(fields.length))
+        console.log(a);
+        const elements = [];
+  
+        while (a > 0) {
+          elements.push({ name: "questions" });
+          a--;
+        }
+        append(elements);
+      }
+      else{
+        alert("maximum of 20 items only!")
+      }
 
-    let a = times - 1;
-    const elements = [{ test: "test" }];
-
-    while (a >= 0) {
-      elements.push({ test: "test" });
-      console.log(elements);
-      a--;
     }
-    append(elements);
+    else {
+      if(times >= 1){
+        let a = (Number(fields.length)-times)
+        console.log(a);
+        const elements = [];
+        let b = (fields.length-1)
+        while (a > 0) {
+          
+          elements.push(b);
+          b--;
+          a--;
+        }
+        console.log(elements)
+        remove(elements);
+        
+      }
+      else{
+        alert("invalid input")
+      }
+    }
+    
+    
   };
 
   const GreenRadio = withStyles({
@@ -190,19 +220,7 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
                                 )}
                               />
                 </Box>
-                <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
-                    <TextField
-                      size="medium"
-                      required
-                      id="outlined-basic"
-                      label="Set number of Items"
-                      type="number"
-                      name= {"partNoOfItems"}
-                      variant="outlined"
-                      fullWidth
-                      inputRef={register()}
-                    />
-              </Box>
+                
               <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
                     <TextField
                       size="medium"
@@ -291,16 +309,34 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
                 alignItems="flex-start"
                 alignContent="flex-start"
             >
+         <div style={{width:65,marginTop:7}} >
 
-           
+         
+          <TextField
+                      required
+                      id="outlined-basic"
+                      label=""
+                      type="number"
+                      name= {"partNoOfItems"}
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                      InputProps={{
+                        inputProps: { 
+                            max: 20, min: 1 
+                        }
+                    }}
+                      inputRef={register()}
+                    /> 
+          </div> 
+                    
             <Button
               variant="contained"
               color="secondary"
               className={classes.button}
-              onClick={() => append()}
-              startIcon={<AddIcon />}
+              onClick={() => appen(watch('partNoOfItems'))}  
             >
-              Add Parts
+              Set Parts
             </Button>
             
             <Button

@@ -370,7 +370,7 @@ const handlePart = () =>{
         color="default"
         className={classes.button}
         startIcon={<AddIcon />}
-        type="submit"
+        onClick={()=>handlePart()}
       >
         Add Parts
       </Button>

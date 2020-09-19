@@ -50,7 +50,8 @@ export default function Parts(props) {
     handleSubmit,
     getValues,
     errors,
-    setValue
+    setValue,
+    watch,
   } = useForm({defaultValues});
   const onSubmit = (data) => {
     console.log("examId: "+props.examId)
@@ -64,9 +65,9 @@ export default function Parts(props) {
         props.part?
         <form onSubmit={handleSubmit(onSubmit)}>
         
-  
+         
         <PartsDetails
-          {...{ control, register, defaultValues, getValues, setValue, errors }}
+          {...{ control, register, defaultValues, getValues, setValue, errors,watch }}
         />
   
         <input type="submit" />
