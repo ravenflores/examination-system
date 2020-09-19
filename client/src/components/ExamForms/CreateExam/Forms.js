@@ -336,7 +336,7 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
               className={classes.button}
               onClick={() => appen(watch('partNoOfItems'))}  
             >
-              Set Parts
+              Set Items
             </Button>
             
             <Button
