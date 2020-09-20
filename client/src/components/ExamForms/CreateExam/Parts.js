@@ -169,7 +169,6 @@ export default function Parts(props) {
           {...{ control, register, defaultValues, getValues, setValue, errors,watch }}
         />
   
-        <input type="submit" />
       </form>
       :null
       }
