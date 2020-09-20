@@ -208,7 +208,7 @@ const handlePart = () =>{
                 name="examname"
                 type="text"
                 variant="outlined"
-                inputRef={register}
+                inputRef={register()}
                 fullWidth
                 size="medium"
               />
@@ -229,7 +229,7 @@ const handlePart = () =>{
                     label="Grade"
                     name="grade"
                     type="text"
-                    inputRef={register}
+                    inputRef={register()}
                     variant="outlined"
                   />
                 )}
@@ -243,7 +243,6 @@ const handlePart = () =>{
                 options={sections}
                 getOptionLabel={(sections) => sections.section}
                 style={{ width: 240 }}
-                inputRef={register}
                 name="Section"
                 type="text"
                 renderInput={(params) => (
@@ -254,7 +253,7 @@ const handlePart = () =>{
                     label="Section"
                     name="section"
                     type="text"
-                    inputRef={register}
+                    inputRef={register()}
                     variant="outlined"
                   />
                 )}
@@ -278,7 +277,7 @@ const handlePart = () =>{
                 name="durationhrs"
                 variant="outlined"
                 fullWidth
-                inputRef={register}
+                inputRef={register()}
               />
             </Box>
             <Box p={0} m={1} css={{ width: 80 }} >
@@ -291,7 +290,7 @@ const handlePart = () =>{
                 name="durationmins"
                 variant="outlined"
                 fullWidth
-                inputRef={register}
+                inputRef={register()}
               />
             </Box>
             </Box>
@@ -315,7 +314,7 @@ const handlePart = () =>{
                     name="date"
                     type="text"
                     value={selectedDate}
-                    inputRef={register}
+                    inputRef={register()}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{
                       "aria-label": "change date",
@@ -341,7 +340,7 @@ const handlePart = () =>{
                     type="text"
                     value={selectedDate}
                     onChange={handleDateChange}
-                    inputRef={register}
+                    inputRef={register()}
                     KeyboardButtonProps={{
                       "aria-label": "change time",
                     }}
@@ -370,7 +369,7 @@ const handlePart = () =>{
         color="default"
         className={classes.button}
         startIcon={<AddIcon />}
-        onClick={()=>handlePart()}
+        type="submit"
       >
         Add Parts
       </Button>

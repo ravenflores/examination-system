@@ -27,9 +27,13 @@ const userSchema = new mongoose.Schema({
         type:Date,
         required: true,
     },
+    dateCreated: {
+        type:Date,
+        required: true,
+    },
     createdBy:[{
         type:ObjectId,
-        ref: "User"
+        ref: "Teachers"
     }],
 })
 mongoose.model("Exams",userSchema)

@@ -28,7 +28,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CardHeader from '@material-ui/core/CardHeader';
-import MultipleChoice from './Types';
+import MultipleChoice from './PartsFormChoices';
 
 export default function PartsDetails({ control, register, setValue,partNum, getValues, watch }) {
   const { fields, append, remove, prepend } = useFieldArray({
@@ -204,7 +204,6 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
                                 options={types}
                                 getOptionLabel={(types) => types.type}
                                 style={{ width: 'auto' }}
-                                name="Grade"
                                 type="text"
                                 renderInput={(params) => (
                                   <TextField
@@ -212,7 +211,7 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
                                     required
                                     {...params}
                                     label="Select Exam Types"
-                                    name={"examTypes"}
+                                    name={"type"}
                                     type="text"
                                     inputRef={register()}
                                     variant="outlined"
@@ -228,7 +227,7 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
                       id="outlined-basic"
                       label="Set Points Per Item"
                       type="number"
-                      name={"partPointsPerItem"}
+                      name={"points"}
                       variant="outlined"
                       fullWidth
                       inputRef={register()}
@@ -265,7 +264,7 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
                     id="outlined-basic"
                     label="Instructions"
                     type="number"
-                    name={partNum + "partSetInstructions"}
+                    name={"instructions"}
                     variant="outlined"
                     multiline
                     fullWidth
@@ -317,10 +316,11 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
                       id="outlined-basic"
                       label=""
                       type="number"
-                      name= {"partNoOfItems"}
+                      name= {"items"}
                       variant="outlined"
                       size="small"
                       fullWidth
+                      defaultValue={1}
                       InputProps={{
                         inputProps: { 
                             max: 20, min: 1 
@@ -334,7 +334,7 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
               variant="contained"
               color="secondary"
               className={classes.button}
-              onClick={() => appen(watch('partNoOfItems'))}  
+              onClick={() => appen(watch('items'))}  
             >
               Set Items
             </Button>

@@ -26,7 +26,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CancelIcon from '@material-ui/icons/Cancel';
 
 
-import PartsDetails from './Forms'
+import PartsDetails from './PartForm'
 
 
 
@@ -39,6 +39,10 @@ const defaultValues = {
   ],
 
 };
+
+ 
+ 
+
 
 
 
@@ -56,8 +60,105 @@ export default function Parts(props) {
   const onSubmit = (data) => {
     console.log("examId: "+props.examId)
     console.log("data", data);
+
+    saveParts(data)
+
   } 
 
+  const [partId,setPartId] = useState()
+
+
+
+  const saveParts = (data) =>
+  {
+  if(!props.examId){
+    console.log("meron")
+    
+  }
+  else{
+    console.log("wala")
+  
+  
+    fetch("/createparts",{
+      method:"post",  
+      headers:{
+          "Content-Type": "application/json",
+          "Authorization":"Bearer "+localStorage.getItem("jwt")
+      },
+      body:JSON.stringify({   
+        type: data.type,
+        items: data.items,
+        points: data.points,
+        difficulty: data.difficulty,
+        instructions: data.instructions,
+        examId: props.examId,
+  
+      })
+  }).then(res => res.json())
+  .then(datas =>{ 
+      console.log(datas.error)
+      if(datas.error){
+          alert(datas.error)
+          
+      }
+      else{
+         
+          alert("Parts Created!")
+          console.log(datas.parts._id)
+          saveItems(data,datas.parts._id)
+          
+      }
+  })
+  }
+  }
+
+  const saveItems = (data,pId) =>
+  {
+  if(partId){
+    console.log("wala")
+    
+  }
+  else{
+    console.log("meron")
+  
+   data.questions.map((item, index) =>{
+        console.log(item)
+        console.log(pId)
+        fetch("/createitems",{
+          method:"post",  
+          headers:{
+              "Content-Type": "application/json",
+              "Authorization":"Bearer "+localStorage.getItem("jwt")
+          },
+          body:JSON.stringify({   
+            question:item.question,
+            answer: item.answer,
+            choices: item.choices,
+            points: "1",
+            partsId:pId,
+      
+          })
+      }).then(res => res.json())
+      .then(data =>{ 
+          console.log(data.error)
+          if(data.error){
+              alert(data.error)
+              
+          }
+          else{
+            
+              alert("Parts Created!")
+              console.log(data)
+      
+              
+          }
+      })
+
+   })
+    
+  }
+  
+  }
 
   return (
     <div>

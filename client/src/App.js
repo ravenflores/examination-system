@@ -7,6 +7,9 @@ import TeacherDashboard from './components/ExamForms/Dashboard/Teacher'
 import {reducer,initialState} from './reducers/userReducer'
 import './App.css'
 
+import CreateExam from './components/ExamForms/CreateExam/CreateExam'
+import AllExams from './components/ExamForms/EditExam/AllExams'
+
 
 
 export const UserContext = createContext()
@@ -14,28 +17,28 @@ export const UserContext = createContext()
 const Routing = () => {
   const history = useHistory()
   const{state,dispatch} = useContext(UserContext)
-  // useEffect(()=>{
-  //   const position =  JSON.parse( localStorage.getItem("position"))
-  //   const user =  JSON.parse( localStorage.getItem("user"))
+  useEffect(()=>{
+    const position =  JSON.parse( localStorage.getItem("position"))
+    const user =  JSON.parse( localStorage.getItem("user"))
     
 
-  //   console.log(position)
+    console.log(position)
     
-  //     if(user){
-  //       dispatch({type:"USER",payload:user})
-  //       history.push('/teacher/dashboard')
-  //     }
-  //     else{
-  //       if(position=="teacher")
-  //       {
-  //         history.push('/teacher')
-  //       }
-  //       else {
-  //         history.push('/')
-  //       }
-  //     }
+      if(user){
+        dispatch({type:"USER",payload:user})
+        history.push('/teacher/dashboard')
+      }
+      else{
+        if(position=="teacher")
+        {
+          history.push('/teacher')
+        }
+        else {
+          history.push('/')
+        }
+      }
                                                                                                                                                                                                                                                                                                                                                                    
-  // },[])
+  },[])
   return(
     <Switch>
         <Route exact path= "/">
@@ -46,6 +49,12 @@ const Routing = () => {
         </Route>
         <Route exact path= "/teacher/dashboard">
           <TeacherDashboard />
+        </Route>
+        <Route exact path= "/teacher/dashboard/createexam">
+          <CreateExam />
+        </Route>
+        <Route exact path= "/teacher/dashboard/allexam">
+          <AllExams />
         </Route>
     </Switch>
     )

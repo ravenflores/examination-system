@@ -12,7 +12,9 @@ const userSchema = new mongoose.Schema({
         
     },
     choices:[{
-        type:String,
+        choice: {
+            type: String,
+        },
         required:false,
     }],
     points:{

@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Container } from '@material-ui/core';
 
 import CreateExam from '../CreateExam/CreateExam'
+import AllExams from '../EditExam/AllExams'
 
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
@@ -30,6 +31,14 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import NavigationIcon from '@material-ui/icons/Navigation';
+
+import ListSubheader from '@material-ui/core/ListSubheader';
+import Collapse from '@material-ui/core/Collapse';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import SendIcon from '@material-ui/icons/Send';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import StarBorder from '@material-ui/icons/StarBorder';
 
 
 const drawerWidth = 240;
@@ -76,6 +85,14 @@ const useStyles = makeStyles((theme) => ({
   extendedIcon: {
     marginRight: theme.spacing(1),
   },
+  rootNested: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
 }));
 
 function TeacherDashboard(props) {
@@ -87,10 +104,18 @@ function TeacherDashboard(props) {
     const [edit,setEdit] = useState("")
     const [text,setText] = useState("")
 
+    const [onPage,setOnPage] = useState(<AllExams />)
+
     const { window } = props;
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    const [open, setOpen] = React.useState(true);
+
+    const handleClick = () => {
+      setOpen(!open);
+    };
   
     const handleDrawerToggle = () => {
       setMobileOpen(!mobileOpen);
@@ -100,14 +125,39 @@ function TeacherDashboard(props) {
         <div>
           <div className={classes.toolbar} />
           <Divider />
+
           <List>
-            {['Profile', 'Exams','Pending Exams', 'Student Records','Data Analysis'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
+
+        <ListItem button >
+                <ListItemText primary={'Profile'} />
+        </ListItem>
+      <ListItem button onClick={handleClick}>
+        {/* <ListItemIcon>
+          <InboxIcon />
+        </ListItemIcon> */}
+        <ListItemText primary="Exam" />
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItem button onClick={()=>setOnPage(<AllExams />)} className={classes.nested}>
+            <ListItemText primary="Exams" />
+          </ListItem>
+          <ListItem button onClick={()=>setOnPage(<CreateExam />)} className={classes.nested}>
+            <ListItemText primary="Create Exam" />
+          </ListItem>
+        </List>
+      </Collapse>
+      <ListItem button component={Link} to="/design" >
+                <ListItemText primary={'Pending Exams'} />
               </ListItem>
-            ))}
-          </List>
+              <ListItem button component={Link} to="/design" >
+                <ListItemText primary={'Student Records'} />
+              </ListItem>
+              <ListItem button component={Link} to="/design" >
+                <ListItemText primary={'Data Analysis'} />
+      </ListItem>
+    </List>
           <Divider />
           <List>
             {['Sign Out'].map((text, index) => (
@@ -119,10 +169,12 @@ function TeacherDashboard(props) {
           </List>
         </div>
       );
+
     
-      const container = window !== undefined ? () => window().document.body : undefined;
+    const container = window !== undefined ? () => window().document.body : undefined;
 
 
+    
     // useEffect(() => {
     //     fetch('/allpost',{
     //         headers:{
@@ -198,7 +250,7 @@ function TeacherDashboard(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <CreateExam />
+       {onPage}
          
          
       </main>
