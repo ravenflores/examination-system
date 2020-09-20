@@ -187,11 +187,10 @@ const handlePart = () =>{
       <div style={{ width: "100%" }}>
       <form onSubmit={handleSubmit((data) => saveExam(data))} >
       <Card className={classes.root} variant="outlined">
-      <CardContent>
+      <CardContent style={{padding:0}}>
           <Box
             display="flex"
             flexDirection="row"
-            p={1}
             m={1}
             bgcolor="background.paper"
             flexWrap="wrap"
@@ -201,7 +200,7 @@ const handlePart = () =>{
             css={{borderRadius:'6px'}}
 
           >
-            <Box p={0} m={1} css={{ width: 400 }}  flexGrow={1}>
+            <Box p={0} m={1} css={{ width: 325 }}  flexGrow={1}>
               <TextField
                 required
                 id="outlined-basic"
@@ -214,13 +213,13 @@ const handlePart = () =>{
                 size="medium"
               />
             </Box>
-            <Box p={0} m={1} css={{ width: 240 }}>
+            <Box p={0} m={1} css={{ width: 300 }} flexGrow={1}>
               <Autocomplete
                 size="medium"
                 id="combo-box-demo"
                 options={subjects}
                 getOptionLabel={(subjects) => subjects.subject}
-                style={{ width: 240 }}
+                style={{ width: 'auto' }}
                 type="text"
                 renderInput={(params) => (
                   <TextField
@@ -232,17 +231,18 @@ const handlePart = () =>{
                     type="text"
                     inputRef={register()}
                     variant="outlined"
+                    fullWidth
                   />
                 )}
               />
             </Box>
-            <Box p={0} m={1} css={{ width: 100 }}>
+            <Box p={0} m={1} css={{ width: 100 }} flexGrow={1}>
               <Autocomplete
                 size="medium"
                 id="combo-box-demo"
                 options={grades}
                 getOptionLabel={(grades) => grades.grade}
-                style={{ width: 100 }}
+                style={{ width: 'auto' }}
                 type="text"
                 renderInput={(params) => (
                   <TextField
@@ -259,13 +259,13 @@ const handlePart = () =>{
               />
             </Box>
 
-            <Box p={0} m={1} css={{ width: 240 }}>
+            <Box p={0} m={1} css={{ width: 300 }} flexGrow={1}>
               <Autocomplete
                 size="medium"
                 id="combo-box-demo"
                 options={sections}
                 getOptionLabel={(sections) => sections.section}
-                style={{ width: 240 }}
+                style={{ width: 'auto' }}
                 name="Section"
                 type="text"
                 renderInput={(params) => (
@@ -282,15 +282,8 @@ const handlePart = () =>{
                 )}
               />
             </Box>
-            <Box  css={{ width: 200 }} flexgrow={1}
-            display="flex"
-            flexDirection="row"
-            flexWrap="wrap"
-            justifyContent="center"
-            alignItems="flex-start" 
-            alignContent="flex-start"
-            >
-            <Box p={0} m={1} css={{ width: 80 }}  >
+            
+            <Box p={0} m={1} css={{ width: 80 }}  flexGrow={1}>
               <TextField
                 size="medium"
                 required
@@ -303,7 +296,7 @@ const handlePart = () =>{
                 inputRef={register()}
               />
             </Box>
-            <Box p={0} m={1} css={{ width: 80 }} >
+            <Box p={0} m={1} css={{ width: 80 }} flexGrow={1}>
               <TextField
                 size="medium"
                 required
@@ -315,7 +308,6 @@ const handlePart = () =>{
                 fullWidth
                 inputRef={register()}
               />
-            </Box>
             </Box>
 
             <Box  css={{ width: 340 }} flexgrow={1}
@@ -330,7 +322,7 @@ const handlePart = () =>{
               
                   <KeyboardDatePicker
                     margin="none"
-                    width="150px"
+                    width="auto"
                     id="date-picker-dialog"
                     label="Date picker dialog"
                     format="MM/dd/yyyy"
@@ -343,7 +335,7 @@ const handlePart = () =>{
                       "aria-label": "change date",
                     }}
                     size="medium"
-                    style={{width:"150px"}}
+                    style={{width:"auto"}}
                   />
                 
                
@@ -356,7 +348,7 @@ const handlePart = () =>{
               <KeyboardTimePicker
                     size="medium"
                     margin="none"
-                    width="150px"
+                    width="auto"
                     id="time-picker"
                     label="Time picker"
                     name="time"
@@ -367,7 +359,7 @@ const handlePart = () =>{
                     KeyboardButtonProps={{
                       "aria-label": "change time",
                     }}
-                    style={{width:"150px"}}
+                    style={{width:"auto"}}
                 />
           
               </MuiPickersUtilsProvider>

@@ -197,7 +197,7 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
                 alignItems="flex-start"
                 alignContent="flex-start"
               >
-                <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
+                <Box p={0} m={1} css={{ width: 180 }} flexGrow={1}>
                               <Autocomplete
                                 size="medium"
                                 id="combo-box-demo"
@@ -215,12 +215,13 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
                                     type="text"
                                     inputRef={register()}
                                     variant="outlined"
+                                    fullWidth
                                   />
                                 )}
                               />
                 </Box>
                 
-              <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
+              <Box p={0} m={1} css={{ width: 180 }} flexGrow={1}>
                     <TextField
                       size="medium"
                       required
@@ -234,7 +235,7 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
                     />
               </Box>
               
-              <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
+              <Box p={0} m={1} css={{ width: 180 }} flexGrow={1}>
                               <Autocomplete
                                 size="medium"
                                 id="combo-box-demo"
@@ -253,11 +254,12 @@ export default function PartsDetails({ control, register, setValue,partNum, getV
                                     type="text"
                                     inputRef={register()}
                                     variant="outlined"
+                                    fullWidth
                                   />
                                 )}
                               />
                 </Box>
-                <Box p={0} m={1} css={{ width: 400 }} flexGrow={1}>
+                <Box p={0} m={1} css={{ width: 180 }} flexGrow={1}>
                   <TextField
                     size="medium"
                     required

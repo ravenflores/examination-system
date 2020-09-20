@@ -90,6 +90,7 @@ export default function AllExams() {
                                     //     R
                                     // </Avatar>
                                     // }
+                                    style={{padding:10}}
                                     action={
                                         <>
                                     <Tooltip title="Edit">

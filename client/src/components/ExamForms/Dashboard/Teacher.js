@@ -140,10 +140,10 @@ function TeacherDashboard(props) {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button onClick={()=>setOnPage(<AllExams />)} className={classes.nested}>
+          <ListItem button onClick={()=>(setMobileOpen(false),setOnPage(<AllExams />))} className={classes.nested}>
             <ListItemText primary="Exams" />
           </ListItem>
-          <ListItem button onClick={()=>setOnPage(<CreateExam />)} className={classes.nested}>
+          <ListItem button onClick={()=>(setMobileOpen(false),setOnPage(<CreateExam />))} className={classes.nested}>
             <ListItemText primary="Create Exam" />
           </ListItem>
         </List>
