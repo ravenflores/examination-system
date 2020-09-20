@@ -103,7 +103,7 @@ export default function Parts(props) {
       }
       else{
          
-          alert("Parts Created!")
+
           console.log(datas.parts._id)
           saveItems(data,datas.parts._id)
           
@@ -146,8 +146,6 @@ export default function Parts(props) {
               
           }
           else{
-            
-              alert("Parts Created!")
               console.log(data)
       
               

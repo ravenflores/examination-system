@@ -6,6 +6,11 @@ const userSchema = new mongoose.Schema({
         required:true,
         
     },
+    subject: {
+        type: String,
+        required:true,
+        
+    },
     grade: {
         type: Number,
         required: true,

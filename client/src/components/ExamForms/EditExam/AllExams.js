@@ -8,8 +8,14 @@ import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import EdtIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { red } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Tooltip from '@material-ui/core/Tooltip';
+import Switch from '@material-ui/core/Switch';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,6 +43,14 @@ const useStyles = makeStyles((theme) => ({
 export default function AllExams() {
     const [data,setData] = useState([])
     const classes = useStyles();
+    const [state, setState] = React.useState({
+        checkedA: true,
+        checkedB: true,
+      });
+
+      const handleChange = (event) => {
+        setState({ ...state, [event.target.name]: event.target.checked });
+      };
 
     useEffect(()=>{
         fetch('/myexams',{
@@ -51,32 +65,61 @@ export default function AllExams() {
         })
         },[])    
         const convertDate = (dates) =>{
-            
-            let date = new Date(dates);
-            let a = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate()   
-            return a
+
+            let date = new Date(dates.date);
+            if(dates.subject){ 
+                let a = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate()+' '+' '+' '+dates.subject
+                return a
+            }
+            else{   
+                let a = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate()   
+                 return a
+            }
         }
     return (
         <div style={{width:'inherit'}}>
             {  
-                    data.map(item => {
+            
+                    data.map((item,index) => {
                         return(
-                            <Card>
+                            <Card style={{marginBottom:2}}>
                             <CardHeader
-                                    avatar={
-                                    <Avatar aria-label="recipe" className={classes.avatar}>
-                                        R
-                                    </Avatar>
-                                    }
+                                    // avatar={
+                                    // <Avatar aria-label="recipe" className={classes.avatar}>
+                                    //     R
+                                    // </Avatar>
+                                    // }
                                     action={
-                                    <IconButton aria-label="settings">
-                                        <MoreVertIcon />
+                                        <>
+                                    <Tooltip title="Edit">
+                                    <IconButton aria-label="edit">
+                                        <EdtIcon />
                                     </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Delete">
+                                    <IconButton aria-label="delete">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="toggle show and hide exam">
+                                    <FormControlLabel
+                                        control={
+                                        <Switch
+                                            checked={state.checked}
+                                            onChange={handleChange}
+                                            name={`checked${index}`}
+                                            color="primary"
+                                        />
+                                        }
+                                        
+                                    />
+                                    </Tooltip>
+                                    
+                                    </>
+
                                     }
                                     title={ item.examname }
-                                    subheader={
-                                        
-                                        convertDate(item.date)
+                                    subheader={'                    '+convertDate(item)
                                     
                                     }
                                 />

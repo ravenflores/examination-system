@@ -32,8 +32,8 @@ router.get("/myexams",requireLogin,(req,res) => {
 })
 
 router.post('/createexam',requireLogin,(req,res) => {
-    const {examname,grade,section,durationhrs,durationmins,date} = req.body
-    if(!examname || !grade || !section || !durationhrs || !durationmins || !date) {
+    const {examname,grade,section,durationhrs,durationmins,date,subject} = req.body
+    if(!examname || !grade || !section || !durationhrs || !durationmins || !date || !subject) {
         return res.status(422).json({error: "Please add all the fields"})
     }
 
@@ -41,6 +41,7 @@ router.post('/createexam',requireLogin,(req,res) => {
         examname,
         grade,
         section,
+        subject,
         durationhrs,
         durationmins,
         date,

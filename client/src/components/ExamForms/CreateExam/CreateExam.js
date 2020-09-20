@@ -139,6 +139,7 @@ else{
       durationhrs: data.durationhrs,
       durationmins: data.durationmins,
       date: selectedDate,
+      subject: data.subject,
 
     })
 }).then(res => res.json())
@@ -211,6 +212,28 @@ const handlePart = () =>{
                 inputRef={register()}
                 fullWidth
                 size="medium"
+              />
+            </Box>
+            <Box p={0} m={1} css={{ width: 240 }}>
+              <Autocomplete
+                size="medium"
+                id="combo-box-demo"
+                options={subjects}
+                getOptionLabel={(subjects) => subjects.subject}
+                style={{ width: 240 }}
+                type="text"
+                renderInput={(params) => (
+                  <TextField
+                    size="medium"
+                    required
+                    {...params}
+                    label="Subject"
+                    name="subject"
+                    type="text"
+                    inputRef={register()}
+                    variant="outlined"
+                  />
+                )}
               />
             </Box>
             <Box p={0} m={1} css={{ width: 100 }}>
@@ -399,6 +422,15 @@ const sections = [
   { section: "Queen Of Heaven",id: 7},
   { section: "Queen Of Prophets",id: 8},
   { section: "Queen Of Love",id:9},
+  
+ ]
+ const subjects = [
+  { subject: "English",id: 1},
+  { subject: "Math",id: 2},
+  { subject: "Science",id:3},
+  { subject: "Filipino",id:3},
+  { subject: "Computer",id:3},
+  { subject: "PE",id:3},
   
  ]
 
