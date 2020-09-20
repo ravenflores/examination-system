@@ -68,7 +68,7 @@ export default function AllExams() {
 
             let date = new Date(dates.date);
             if(dates.subject){ 
-                let a = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate()+' '+' '+' '+dates.subject
+                let a = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate()+' '+dates.subject+' '+dates.grade+' '+dates.section
                 return a
             }
             else{   
@@ -82,7 +82,8 @@ export default function AllExams() {
             
                     data.map((item,index) => {
                         return(
-                            <Card style={{marginBottom:2}}>
+                            <Card style={{marginBottom:2,borderRadius:0}}>
+                            
                             <CardHeader
                                     // avatar={
                                     // <Avatar aria-label="recipe" className={classes.avatar}>
@@ -119,7 +120,7 @@ export default function AllExams() {
 
                                     }
                                     title={ item.examname }
-                                    subheader={'                    '+convertDate(item)
+                                    subheader={convertDate(item)
                                     
                                     }
                                 />
