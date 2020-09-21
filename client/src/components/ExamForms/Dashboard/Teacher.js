@@ -104,7 +104,7 @@ function TeacherDashboard(props) {
     const [edit,setEdit] = useState("")
     const [text,setText] = useState("")
 
-    const [onPage,setOnPage] = useState(<AllExams />)
+    const [onPage,setOnPage] = useState()
 
     const { window } = props;
     const classes = useStyles();
@@ -112,6 +112,16 @@ function TeacherDashboard(props) {
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
     const [open, setOpen] = React.useState(true);
+
+    const handlePages =(a) =>{
+      console.log('napindot')
+      console.log(a)
+      setOnPage(a)
+    }
+
+    useEffect(()=>{
+      setOnPage(<AllExams handlePage={handlePages} />)
+    },[])
 
     const handleClick = () => {
       setOpen(!open);
@@ -140,7 +150,7 @@ function TeacherDashboard(props) {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button onClick={()=>(setMobileOpen(false),setOnPage(<AllExams />))} className={classes.nested}>
+          <ListItem button onClick={()=>(setMobileOpen(false),setOnPage(<AllExams handlePage={handlePages} />))} className={classes.nested}>
             <ListItemText primary="Exams" />
           </ListItem>
           <ListItem button onClick={()=>(setMobileOpen(false),setOnPage(<CreateExam />))} className={classes.nested}>

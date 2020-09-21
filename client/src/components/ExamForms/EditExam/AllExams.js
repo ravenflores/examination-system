@@ -17,6 +17,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import Switch from '@material-ui/core/Switch';
 
+import AllParts from './AllParts'
+
 const useStyles = makeStyles((theme) => ({
     root: {
       maxWidth: 345,
@@ -40,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export default function AllExams() {
+export default function AllExams(props) {
     const [data,setData] = useState([])
     const classes = useStyles();
     const [state, setState] = React.useState({
@@ -82,7 +84,7 @@ export default function AllExams() {
             
                     data.map((item,index) => {
                         return(
-                            <Card style={{marginBottom:2,borderRadius:0}}>
+                            <Card style={{marginBottom:2,borderRadius:0}} key={item._id}>
                             
                             <CardHeader
                                     // avatar={
@@ -94,7 +96,7 @@ export default function AllExams() {
                                     action={
                                         <>
                                     <Tooltip title="Edit">
-                                    <IconButton aria-label="edit">
+                                    <IconButton aria-label="edit" onClick={()=>props.handlePage(<AllParts examId={item._id} />)} >
                                         <EdtIcon />
                                     </IconButton>
                                     </Tooltip>

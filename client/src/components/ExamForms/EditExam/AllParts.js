@@ -1,12 +1,109 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
+import { useForm, useFieldArray, Controller, useWatch } from "react-hook-form";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
+import Typography from '@material-ui/core/Typography';
+import Box from "@material-ui/core/Box";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
+import Fab from '@material-ui/core/Fab';
+
+import SaveIcon from '@material-ui/icons/Save';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import CancelIcon from '@material-ui/icons/Cancel';
+
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+
+import { makeStyles } from "@material-ui/core/styles";
+
+import CreateExam from './GenerateExam'
+
+const types = [
+    { type: "Multiple Choice", id: 1 },
+    { type: "Identification", id: 2 },
+    { type: "True or False", id: 3 },
+    { type: "Photo Guess", id: 4 },
+    { type: "Enumeration", id: 5 },
+    { type: "Essay", id: 6 },
+  ];
+
+  const difficulty = [
+    { type: "Easy", id: 1 },
+    { type: "Medium", id: 2 },
+    { type: "Hard", id: 3 },
+    { type: "Very Hard", id: 4 },
+  ];
+const useStyles = makeStyles((theme) => ({
+    root: {
+      width: 'auto',
+    },
+    bullet: {
+      display: "inline-block",
+      margin: "0 2px",
+      transform: "scale(0.8)",
+    },
+    title: {
+      fontSize: 14,
+    },
+    pos: {
+      marginBottom: 12,
+    },
+    container: {
+      display: "flex",
+      justifyContent: "center",
+    },
+    text: {
+      color: "blue",
+    },
+    paper: {
+      position: "absolute",
+      width: 400,
+      backgroundColor: theme.palette.background.paper,
+      // border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+    acc: {
+      width: "100%",
+    },
+    heading: {
+      fontSize: theme.typography.pxToRem(15),
+      flexBasis: "33.33%",
+      flexShrink: 0,
+    },
+    secondaryHeading: {
+      fontSize: theme.typography.pxToRem(15),
+      color: theme.palette.text.secondary,
+    },
+    button: {
+      margin: theme.spacing(1),
+    },
+    fab: {
+      "& > *": {
+        margin: theme.spacing(1),
+        position: "fixed",
+        bottom: theme.spacing(2),
+        right: theme.spacing(2),
+      },
+    },
+    details: {
+      verticalAlign: "middle",
+    },
+    extendedIcon: {
+      marginRight: theme.spacing(1),
+    },
+    card: {
+      width: "inherit",
+      marginTop:"8px",
+    },
+  }));
+
+  
 
 
-
-
-const newDynamicElem =(examid,partNum) => {
+const newDynamicElem =(examid,partNum,classes) => {
 
         return (
             <>
@@ -63,7 +160,7 @@ const newDynamicElem =(examid,partNum) => {
                                         label="Select Exam Types"
                                         name={partNum+"examTypes"}
                                         type="text"
-                                        inputRef={register}
+                                        
                                         variant="outlined"
                                       />
                                     )}
@@ -79,7 +176,7 @@ const newDynamicElem =(examid,partNum) => {
                           name= {partNum+"partNoOfItems"}
                           variant="outlined"
                           fullWidth
-                          inputRef={register}
+                          
                         />
                   </Box>
                   <Box p={0} m={1} css={{ width: 200 }} flexGrow={1}>
@@ -92,7 +189,7 @@ const newDynamicElem =(examid,partNum) => {
                           name={partNum+"partPointsPerItem"}
                           variant="outlined"
                           fullWidth
-                          inputRef={register}
+                          
                         />
                   </Box>
                   
@@ -113,7 +210,7 @@ const newDynamicElem =(examid,partNum) => {
                                         label="difficulty"
                                         name={partNum+"difficulty"}
                                         type="text"
-                                        inputRef={register}
+                                        
                                         variant="outlined"
                                       />
                                     )}
@@ -130,7 +227,7 @@ const newDynamicElem =(examid,partNum) => {
                           variant="outlined"
                           multiline
                           fullWidth
-                          inputRef={register}
+                          
                         />
                   </Box>
                     </Box>
@@ -166,9 +263,73 @@ const newDynamicElem =(examid,partNum) => {
         )
     } 
 
-export default function AllParts() {
-    return (
+    const defaultValues = {
+        questions: [
+          {
+            name: "questions",
+            choices: [{ choice: "field1"}]
+          }
+        ],
+      
+      };
+export default function AllParts(props) {
+
+  const [data,setData] = useState([])
+  const {
+    control,
+    register,
+    handleSubmit,
+    getValues,
+    errors,
+    setValue,
+    watch,
+  } = useForm({defaultValues});
+  const classes = useStyles();
+//   useEffect(()=>{
+//     console.log('panget')
+//     fetch(`/myparts/${props.examId}`,{
+//         headers:{
+//             "Authorization": "Bearer "+localStorage.getItem("jwt")
+//         }
+//     })
+//     .then(res => res.json())
+//     .then(result => {
+//         console.log(result)
+//         setData(result.mypost)
+//     })
+//     },[])
+
+useEffect(()=>{
+    fetch(`/myexam/${props.examId}`,{
+        headers:{
+            "Authorization": "Bearer "+localStorage.getItem("jwt")
+        }
+    })
+    .then(res => res.json())
+    .then(result => {
+        console.log(result)
+        setData(result.mypost)
+    })
+    },[])   
+
+    const onSubmit = (data) => {
+        console.log("examId: "+props.examId)
+        console.log("data", data);
+    
+      } 
+
+    return ( 
         <div>
+             <form onSubmit={handleSubmit(onSubmit)}>
+            {
+                data.map((item,index)=>{
+
+                    return <CreateExam item={item} />
+
+                })
+            }
+            </form>
+            
             
         </div>
     )

@@ -78,7 +78,8 @@ export default function Parts(props) {
   else{
     console.log("wala")
   
-  
+    console.log(props.examId)
+
     fetch("/createparts",{
       method:"post",  
       headers:{
@@ -91,7 +92,7 @@ export default function Parts(props) {
         points: data.points,
         difficulty: data.difficulty,
         instructions: data.instructions,
-        examId: props.examId,
+        examId: props.examId
   
       })
   }).then(res => res.json())

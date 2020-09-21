@@ -30,6 +30,31 @@ router.get("/myexams",requireLogin,(req,res) => {
         console.log(err)
     })
 })
+router.get("/myexam/:id",requireLogin,(req,res) => {
+    Exams.find({_id:req.params.id})
+    .then(mypost =>{
+        mypost.sort(function(a,b){
+            // Turn your strings into dates, and then subtract them
+            // to get a value that is either negative, positive, or zero.
+            return new Date(b.date) - new Date(a.date);
+          });
+        res.json({mypost})
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+})
+
+router.get("/myparts/:id",requireLogin,(req,res) => {
+    Parts.find({examId:req.params.id})
+    .populate("examId")
+    .then(mypost =>{
+        res.json({mypost})
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+})
 
 router.post('/createexam',requireLogin,(req,res) => {
     const {examname,grade,section,durationhrs,durationmins,date,subject} = req.body
@@ -72,6 +97,7 @@ router.post('/createparts',requireLogin,(req,res) => {
         points,
         difficulty,
         instructions,
+        examId,
     })
 
     parts.save().then(result => {
