@@ -180,6 +180,47 @@ router.post('/signinteacher',(req,res) => {
     })
 })
 
+router.delete('/deleteitem/:id',requireLogin,(req,res) => {
+    Items.findOne({_id:req.params.id})
+    .populate("postedBy","_id")
+    .exec((err,item)=>{
+        if(err || !item){
+            return res.status(422).json({error:err})
+        }
+        // if (post.postedBy._id.toString() === req.user._id.toString()){
+            item.remove()
+            .then(result =>{
+                res.json(result)
+            }).catch(err => {
+                console.log(err)
+            })
+        // }
+    })
+    
+})
+router.put('/deletechoice/:item/:choice',requireLogin,(req,res) => {
+ 
+    console.log(req.params.item)
+    console.log(req.params.choice)
+    Items.findByIdAndUpdate({_id:req.params.item},{
+        $pull:{"choices":{"_id":req.params.choice}}
+    },{
+        new:true
+    })
+    .exec((err,result)=>{
+        if(err){
+            return res.status(422).json({error: err})
+        }
+        else{
+            console.log(result)
+            res.json(result)
+        }
+    })
+    
+   
+ 
+})
+
 
 
 

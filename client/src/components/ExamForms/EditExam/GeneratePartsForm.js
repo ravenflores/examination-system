@@ -169,6 +169,7 @@ import { ClickAwayListener } from "@material-ui/core";
   };
 
   
+  
 
   useEffect(()=> {
       if(setData){
@@ -234,7 +235,36 @@ import { ClickAwayListener } from "@material-ui/core";
       
   }
 
-  // if(this.onpa)
+  const deleteItem = (index) => {
+   try{
+
+    console.log(index)
+    console.log(data[index]._id)
+    fetch(`/deleteitem/${data[index]._id}`,{
+        method: "delete",
+        headers: {
+            Authorization : "Bearer "+localStorage.getItem("jwt")
+
+        }
+    }).then(res => res.json())
+    .then(result => {
+        console.log(result)
+        console.log(data)
+        
+        const newData = data.filter(item => {
+            return item._id !== result._id
+        })
+        setData (newData)
+    })
+
+    remove(index)
+
+   }
+   catch{
+    remove(index)
+   }
+   
+}
 
   return (
       <Card className={classes.root} variant="outlined">
@@ -353,12 +383,12 @@ import { ClickAwayListener } from "@material-ui/core";
                       <CardHeader
                             AnimationEffect
                             action={
-                              <Button variant="contained" onClick={() => remove(index)}>DELETE</Button>
+                              <Button variant="contained" onClick={() => deleteItem(index)}>DELETE</Button>
                             }
                             title={""+(index+1)}
                             // subheader="September 14, 2016"
                           />
-                       <MultipleChoice nestIndex={index} {...{ control, register,data }} />
+                       <MultipleChoice nestIndex={index} {...{ control, register,datas:data }} />
                         
                     </Card> 
                   </div>

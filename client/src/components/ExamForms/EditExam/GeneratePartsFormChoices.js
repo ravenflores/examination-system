@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{useEffect,useState} from "react";
 import { useForm, useFieldArray, Controller, useWatch } from "react-hook-form";
 
 import TextField from "@material-ui/core/TextField";
@@ -30,8 +30,9 @@ import CardHeader from '@material-ui/core/CardHeader';
 import InputFieldsText from "./GenerateInputFields";
 
 
-export default ({ nestIndex, control, register,data }) => {
+export default ({ nestIndex, control, register, datas }) => {
     
+  const [data,setData] = useState(datas)
     console.log(data)
     const { fields, remove, append } = useFieldArray({
       control,
@@ -55,6 +56,7 @@ export default ({ nestIndex, control, register,data }) => {
             append()
         }
     },[fields])
+
 
  const ch = (indexx) =>{
    try {
@@ -113,6 +115,111 @@ export default ({ nestIndex, control, register,data }) => {
    }
  }
 
+ const deleteChoice = (index) => {
+  try{
+
+   console.log(index)
+   console.log(data[nestIndex]._id)
+   fetch(`/deletechoice/${data[nestIndex]._id}/${data[nestIndex].choices[index]._id}`,{
+    method: "put",
+    headers: {
+        "Content-Type":"application/json",
+        "Authorization" : "Bearer "+localStorage.getItem("jwt")
+    }
+}).then(res => res.json())
+.then(result => {
+    console.log(result)
+    console.log(data)
+
+    const newData  = data.map(item => {
+        if(item._id == result._id){
+            return result
+        }
+        else{
+            return item
+        }
+    })
+    console.log(newData)
+     setData(newData)
+})
+
+   remove(index)
+
+  }
+  catch{
+   remove(index)
+  }
+  
+}
+const testChoice = (index) => {
+  try{
+   console.log(data[nestIndex].choices.length)
+   return true
+
+  }
+  catch{
+   return false
+  }
+  
+}
+
+
+const appen = (times) => {
+  console.log(times);
+  console.log(Number(fields.length));
+  if(times > fields.length){
+    if(times <= 10){
+      let a = (times - Number(fields.length))
+      console.log(a);
+      const elements = [];
+
+      while (a > 0) {
+        elements.push({ name: `questions[${nestIndex}].choices` });
+        a--;
+      }
+      append(elements);
+    }
+    else{
+      alert("maximum of 10 choices only!")
+    }
+
+  }
+  else {
+    if(times >= 1){
+      let a = (Number(fields.length)-times)
+      console.log(a);
+      const elements = [];
+      let b = (fields.length-1)
+      while (a > 0) {
+        
+        elements.push(b);
+        b--;
+        a--;
+      }
+      console.log(elements)
+      remove(elements);
+      
+    }
+    else{
+      alert("invalid input")
+    }
+  }
+  
+  
+};
+
+
+
+
+useEffect(()=> {
+  if(setData){
+    if(testChoice()){
+      appen(data[nestIndex].choices.length)
+    }
+       
+  }
+},[data]) 
+
     return (
       <>
          {console.log(data)}
@@ -168,7 +275,7 @@ export default ({ nestIndex, control, register,data }) => {
                         </div>
                         <div style={{width:'45%'}}>
                             {
-                                 indexx == 0?null: <Button className='parts-btn1' variant="contained" onClick={() => remove(indexx)}>DELETE</Button>
+                                 indexx == 0?null: <Button className='parts-btn1' variant="contained" onClick={() => deleteChoice(indexx)}>DELETE</Button>
                             }
                          
                             
