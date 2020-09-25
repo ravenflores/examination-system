@@ -36,6 +36,9 @@ import { getDate } from "date-fns";
 import moment from 'moment';
 import Fab from '@material-ui/core/Fab';
 
+import Parts from './GenerateParts'
+import GeneratePartsList from './GeneratePartsList'
+
 //component
 
 const useStyles = makeStyles((theme) => ({
@@ -95,7 +98,8 @@ const useStyles = makeStyles((theme) => ({
   },
   details: {
     verticalAlign: 'middle'
-  }
+  },
+
 }));
 
 const grades = [
@@ -187,8 +191,12 @@ const matchsection = (a) => {
       
   }
 
+  
+ 
+
 function CreateExam(props) {
   const classes = useStyles();
+  
   const [selectedDate, setSelectedDate] = useState(props.item.date);
   const { register, handleSubmit, errors } = useForm();
   const [examId,setExamId] = useState()
@@ -198,8 +206,19 @@ function CreateExam(props) {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+  const [data,setData] = useState([])
 
-  console.log(props)
+  useEffect(()=>{
+    fetch(`/myparts/${props.examId}`,{
+        headers:{
+            "Authorization": "Bearer "+localStorage.getItem("jwt")
+        }
+    })
+    .then(res => res.json())
+    .then(result => {
+        setData(result.mypost)
+    })
+    },[])   
   const saveExam = (data) =>
 {
 if(examId){
@@ -486,9 +505,13 @@ const handlePart = () =>{
 
       
       </form>
-      {/* {
-        partStatus? <Parts part= {true} examId={examId} setParts={()=>handlePart()} /> : <Parts part= {false} />
-      } */}
+      
+      {
+        data.map((item,index)=> {
+         return <GeneratePartsList  examId={examId} index={index} item={item} />
+        })
+        
+      }
      
       
      

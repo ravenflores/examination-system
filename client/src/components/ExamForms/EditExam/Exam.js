@@ -272,7 +272,7 @@ const newDynamicElem =(examid,partNum,classes) => {
         ],
       
       };
-export default function AllParts(props) {
+export default function Exam(props) {
 
   const [data,setData] = useState([])
   const {
@@ -324,7 +324,7 @@ useEffect(()=>{
             {
                 data.map((item,index)=>{
 
-                    return <CreateExam item={item} />
+                    return <CreateExam examId={props.examId} item={item} />
 
                 })
             }

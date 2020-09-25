@@ -17,7 +17,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import Switch from '@material-ui/core/Switch';
 
-import AllParts from './AllParts'
+import Exam from './Exam'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -96,7 +96,7 @@ export default function AllExams(props) {
                                     action={
                                         <>
                                     <Tooltip title="Edit">
-                                    <IconButton aria-label="edit" onClick={()=>props.handlePage(<AllParts examId={item._id} />)} >
+                                    <IconButton aria-label="edit" onClick={()=>props.handlePage(<Exam examId={item._id} />)} >
                                         <EdtIcon />
                                     </IconButton>
                                     </Tooltip>

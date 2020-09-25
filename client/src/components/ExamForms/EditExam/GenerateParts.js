@@ -26,21 +26,17 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CancelIcon from '@material-ui/icons/Cancel';
 
 
-import PartsDetails from './PartForm'
-import GeneratePartsList from '../EditExam/GeneratePartsList'
-import { WallpaperSharp } from "@material-ui/icons";
-
+import PartsDetails from './GeneratePartsForm'
 
 
 
 const defaultValues = {
-  questions: [
-    {
-      name: "questions",
-      choices: [{ choice: "field1"}]
-    }
-  ],
-
+  // questions: [
+  //   {
+  //     name: "questions",
+  //     choices: [{ choice: "field1"}]
+  //   }
+  // ],
 };
 
  
@@ -50,9 +46,8 @@ const defaultValues = {
 
 
 export default function Parts(props) {
-const [hasPart,setHasPart] = useState(false)
-const [part,setPart] = useState(<> </>)
-const [data,setData] = useState([])
+ 
+
   const {
     control,
     register,
@@ -62,54 +57,6 @@ const [data,setData] = useState([])
     setValue,
     watch,
   } = useForm({defaultValues});
-
-useEffect(()=>{
-  if(setPart){
-    console.log("gumana")
-  }
-},[part])
-
-const useMountEffect = (fun) => useEffect(fun, [])
-
-// const varParts = () => {
-//     let a = data.map((item,index)=> {
-//       console.log(index)
-//       console.log(item)
-//       return <GeneratePartsList  examId={props.examId} index={index} item={item} />
-//      })
-
-//      console.log(a)
-//      return <>a</>
-//   }
-
-const handlePart = () => {
-       setHasPart(false)
-        fetch(`/myparts/${props.examId}`,{
-          headers:{
-              "Authorization": "Bearer "+localStorage.getItem("jwt")
-          }
-      })
-      .then(res => res.json())
-      .then(result => {
-          console.log(result)
-          setData(result.mypost)
-          setHasPart(true)
-      })
-}
-
-useEffect(()=>{
-  if(setData){
-    console.log('gumana data')
-}
-  },[data])  
-
-useEffect(()=>{
-  if(setHasPart){
-    console.log('gumana has')
-}
-  },[hasPart])  
-
-
   const onSubmit = (data) => {
     console.log("examId: "+props.examId)
     console.log("data", data);
@@ -117,6 +64,12 @@ useEffect(()=>{
     saveParts(data)
 
   } 
+
+  const item = props.item
+  
+   
+
+ 
 
   const [partId,setPartId] = useState()
 
@@ -149,7 +102,8 @@ useEffect(()=>{
   
       })
   }).then(res => res.json())
-  .then(datas =>{
+  .then(datas =>{ 
+      console.log(datas.error)
       if(datas.error){
           alert(datas.error)
           
@@ -160,7 +114,6 @@ useEffect(()=>{
           console.log(datas.parts._id)
           saveItems(data,datas.parts._id)
           
-          
       }
   })
   }
@@ -168,8 +121,14 @@ useEffect(()=>{
 
   const saveItems = (data,pId) =>
   {
+  if(partId){
+    console.log("wala")
+    
+  }
+  else{
     console.log("meron")
-    data.questions.map((item, index) =>{
+  
+   data.questions.map((item, index) =>{
         console.log(item)
         console.log(pId)
         fetch("/createitems",{
@@ -193,16 +152,16 @@ useEffect(()=>{
               alert(data.error)
               
           }
-          else{ 
-              props.setParts()
-              handlePart() 
+          else{
               console.log(data)
-                  
+      
+              
           }
       })
 
    })
-  
+    
+  }
   
   }
 
@@ -211,27 +170,13 @@ useEffect(()=>{
       {
         props.part?
         <form onSubmit={handleSubmit(onSubmit)}>
-        
-         
         <PartsDetails
-          {...{ control, register, defaultValues, getValues, setValue, errors,watch }}
+          {...{ control, register, defaultValues, getValues, setValue, errors,watch,item }}
         />
   
       </form>
       :null
       }
-
-<div>
-  nandito
-{!props.partStatus?
-  data.map((item,index)=> {
-    console.log(index)
-    console.log(item)
-    return <GeneratePartsList  examId={props.examId} index={index} item={item} />
-  }):"wala"
-}
-</div>
-
         
       
          {/* {

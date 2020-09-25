@@ -47,7 +47,15 @@ router.get("/myexam/:id",requireLogin,(req,res) => {
 
 router.get("/myparts/:id",requireLogin,(req,res) => {
     Parts.find({examId:req.params.id})
-    .populate("examId")
+    .then(mypost =>{
+        res.json({mypost})
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+})
+router.get("/myitems/:id",requireLogin,(req,res) => {
+    Items.find({partsId:req.params.id})
     .then(mypost =>{
         res.json({mypost})
     })

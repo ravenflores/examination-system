@@ -120,7 +120,7 @@ function CreateExam() {
 {
 if(examId){
   console.log("meron")
-  
+  handlePart()
 }
 else{
   console.log("wala")
@@ -394,7 +394,7 @@ const handlePart = () =>{
       
       </form>
       {
-        partStatus? <Parts part= {true} examId={examId} setParts={()=>handlePart()} /> : <Parts part= {false} />
+        partStatus? <Parts part= {true} examId={examId} partStatus={partStatus} setParts={()=>handlePart()} /> : <Parts part= {false} />
       }
      
       
