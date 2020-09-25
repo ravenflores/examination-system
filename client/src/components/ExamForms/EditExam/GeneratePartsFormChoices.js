@@ -56,7 +56,62 @@ export default ({ nestIndex, control, register,data }) => {
         }
     },[fields])
 
+ const ch = (indexx) =>{
+   try {
+    if(data[nestIndex].choices[indexx].choice === undefined)
+     {
+       console.log("mali")
+       return false
+     }
+     else{
+      console.log("tama")
+      return true
+     }
+    
+   }
+   catch(e){
+    console.log("malicatch")
+    return false
+   }
+ }
 
+ const q = () =>{
+   try {
+    if(data[nestIndex].question === undefined)
+     {
+       console.log("mali")
+       return false
+     }
+     else{
+      console.log("tama")
+      return true
+     }
+    
+   }
+   catch(e){
+    console.log("malicatch")
+    return false
+   }
+ }
+ 
+ const a = () =>{
+   try {
+    if(data[nestIndex].answer === undefined)
+     {
+       console.log("mali")
+       return false
+     }
+     else{
+      console.log("tama")
+      return true
+     }
+    
+   }
+   catch(e){
+    console.log("malicatch")
+    return false
+   }
+ }
 
     return (
       <>
@@ -70,7 +125,7 @@ export default ({ nestIndex, control, register,data }) => {
               inputRef={register()}
               label="question"
               type="text"
-              defaultValue={data?data[nestIndex].question:null}
+              defaultValue={q()?data[nestIndex].question:null}
               variant="outlined"
               fullWidth
                // make sure to set up defaultValue
@@ -84,7 +139,7 @@ export default ({ nestIndex, control, register,data }) => {
                     variant="outlined"
                     label="answer"
                     fullWidth
-                    defaultValue={data?data[nestIndex].answer:null}
+                    defaultValue={a()?data[nestIndex].answer:null}
                     inputRef={register()}
                     margin='dense'
   
@@ -104,7 +159,7 @@ export default ({ nestIndex, control, register,data }) => {
                             name={`questions[${nestIndex}].choices[${indexx}].choice`}
                             variant="outlined"
                             label={`choice ${indexx+1}`}
-                            defaultValue={data?data[nestIndex].choices[indexx].choice:null}
+                            defaultValue={  ch(indexx)?data[nestIndex].choices[indexx].choice:null}
                             fullWidth
                             inputRef={register()}
                             margin='dense'
