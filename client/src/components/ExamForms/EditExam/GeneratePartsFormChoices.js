@@ -33,7 +33,7 @@ import InputFieldsText from "./GenerateInputFields";
 export default ({ nestIndex, control, register, datas }) => {
     
   const [data,setData] = useState(datas)
-    console.log(data)
+    
     const { fields, remove, append } = useFieldArray({
       control,
       name: `questions[${nestIndex}].choices`
@@ -62,17 +62,17 @@ export default ({ nestIndex, control, register, datas }) => {
    try {
     if(data[nestIndex].choices[indexx].choice === undefined)
      {
-       console.log("mali")
+      //  console.log("mali")
        return false
      }
      else{
-      console.log("tama")
+      // console.log("tama")
       return true
      }
     
    }
    catch(e){
-    console.log("malicatch")
+    // console.log("malicatch")
     return false
    }
  }
@@ -81,17 +81,17 @@ export default ({ nestIndex, control, register, datas }) => {
    try {
     if(data[nestIndex].question === undefined)
      {
-       console.log("mali")
+      //  console.log("mali")
        return false
      }
      else{
-      console.log("tama")
+      // console.log("tama")
       return true
      }
     
    }
    catch(e){
-    console.log("malicatch")
+    // console.log("malicatch")
     return false
    }
  }
@@ -100,17 +100,17 @@ export default ({ nestIndex, control, register, datas }) => {
    try {
     if(data[nestIndex].answer === undefined)
      {
-       console.log("mali")
+      //  console.log("mali")
        return false
      }
      else{
-      console.log("tama")
+      // console.log("tama")
       return true
      }
     
    }
    catch(e){
-    console.log("malicatch")
+    // console.log("malicatch")
     return false
    }
  }
@@ -222,7 +222,7 @@ useEffect(()=> {
 
     return (
       <>
-         {console.log(data)}
+        
           <CardContent style={{width:'inherit'}}>
             <TextField
               name={`questions[${nestIndex}].question`}

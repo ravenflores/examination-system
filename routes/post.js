@@ -163,9 +163,8 @@ router.put('/comment',requireLogin,(req,res)=> {
     })
 })
 
-router.delete('/deletepost/:postId',requireLogin,(req,res) => {
-    Post.findOne({_id:req.params.postId})
-    .populate("postedBy","_id")
+router.delete('/deleteallitems/:itemId',requireLogin,(req,res) => {
+    Post.findAll({_id:req.params.itemId})
     .exec((err,post)=>{
         if(err || !post){
             return res.status(422).json({error:err})

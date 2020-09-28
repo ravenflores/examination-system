@@ -114,8 +114,6 @@ function TeacherDashboard(props) {
     const [open, setOpen] = React.useState(true);
 
     const handlePages =(a) =>{
-      console.log('napindot')
-      console.log(a)
       setOnPage(a)
     }
 

@@ -222,6 +222,83 @@ router.put('/deletechoice/:item/:choice',requireLogin,(req,res) => {
 })
 
 
+router.put('/updateparts/:partId',requireLogin,(req,res) => {
+     console.log(req.body)
+     console.log(req.params.partId+"partId")
+     Parts.updateMany({_id:req.params.partId},{
+         $set: { type: req.body.type,items:req.body.items,points:req.body.points,difficulty:req.body.difficulty,instructions:req.body.instructions },
+     })
+     .exec((err,result)=>{
+         if(err){
+             console.log(err)
+             
+         }
+         else{
+             console.log(result)
+ 
+             Parts.findOne({_id:req.params.partId})
+             .exec((err,result)=>{
+                 if(err){
+                     console.log(err)
+                     return res.status(422).json({error: err})
+                 }
+                 else{
+                     console.log(result)
+                     res.json(result)
+                 }
+             })
+             
+         }
+     } )
+  
+ })
+
+ 
+router.put('/updateitems/:partId',requireLogin,(req,res) => {
+     console.log(req.body)
+     console.log(req.params.partId+"partId")
+     Parts.updateMany({_id:req.params.partId},{
+         $set: { type: req.body.type,items:req.body.items,points:req.body.points,difficulty:req.body.difficulty,instructions:req.body.instructions },
+     })
+     .exec((err,result)=>{
+         if(err){
+             console.log(err)
+             
+         }
+         else{
+             console.log(result)
+ 
+             Parts.findOne({_id:req.params.partId})
+             .exec((err,result)=>{
+                 if(err){
+                     console.log(err)
+                     return res.status(422).json({error: err})
+                 }
+                 else{
+                     console.log(result)
+                     res.json(result)
+                 }
+             })
+             
+         }
+     } )
+  
+ })
+
+ router.delete('/deleteallitems/:partsId',requireLogin,(req,res) => {
+
+    
+    Items.deleteMany({partsId:req.params.partsId})
+    .exec((err,item)=>{
+        if(err || !item){
+            return res.status(422).json({error:err})
+        }
+        console.log(item)
+        res.json({result:"result"})
+        
+    })
+    
+})
 
 
 

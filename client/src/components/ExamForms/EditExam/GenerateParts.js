@@ -47,7 +47,7 @@ const defaultValues = {
 
 export default function Parts(props) {
  
-
+  const item = props.item
   const {
     control,
     register,
@@ -57,15 +57,18 @@ export default function Parts(props) {
     setValue,
     watch,
   } = useForm({defaultValues});
+
   const onSubmit = (data) => {
     console.log("examId: "+props.examId)
-    console.log("data", data);
-
-    saveParts(data)
+    console.log(data);
+    console.log(item._id)
+    
+    updateParts(data)
+    // saveParts(data)
 
   } 
 
-  const item = props.item
+ 
   
    
 
@@ -73,7 +76,30 @@ export default function Parts(props) {
 
   const [partId,setPartId] = useState()
 
-
+  const deleteallitems = (data,partId) => {
+    fetch(`/deleteallitems/${partId}`,{
+        method: "delete",
+        headers: {
+            "Content-Type":"application/json",
+            "Authorization" : "Bearer "+localStorage.getItem("jwt")
+        }
+    }).then(res => res.json())
+    .then(result => {
+        console.log(result)
+        saveItems(data,partId)
+        // const newData  = data.map(item => {
+        //     if(item._id == result._id){
+        //         return result
+        //     }
+        //     else{
+        //         return item
+        //     }
+        // })
+        // console.log(newData)
+        //  setData(newData)
+    })
+    
+}
 
   const saveParts = (data) =>
   {
@@ -164,7 +190,62 @@ export default function Parts(props) {
   }
   
   }
+  
+  const deleteItems = (data,pId) =>
+  {
+  if(partId){
+    console.log("wala")
+    
+  }
+  else{
+    console.log("meron")
+  
+    deleteallitems(item._id)
+    
+  }
+  
+  }
 
+
+  const updateParts = (data) => {
+    console.log(data.items)
+    console.log(data.questions.length)
+    fetch(`/updateparts/${item._id}`,{
+        method: "put",
+        headers: {
+            "Content-Type":"application/json",
+            "Authorization" : "Bearer "+localStorage.getItem("jwt")
+        },
+        body:JSON.stringify({
+          type: data.type,
+          items: data.questions.length,
+          points: data.points,
+          difficulty: data.difficulty,
+          instructions: data.instructions,
+          examId: props.examId
+        })
+    }).then(res => res.json())
+    .then(result => {
+    
+        console.log(result)
+        deleteallitems(data,item._id)
+        // const newData  = data.map(item => {
+        //     if(item._id == result._id){
+        //         console.log(state._id)
+        //         return result
+        //     }
+        //     else{
+        //         return item
+        //     }
+        // })
+        //  setData(newData)
+         
+    },
+    //  setEdit("")
+     
+     )
+
+}
   return (
     <div>
       {

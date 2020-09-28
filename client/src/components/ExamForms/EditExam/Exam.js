@@ -285,19 +285,6 @@ export default function Exam(props) {
     watch,
   } = useForm({defaultValues});
   const classes = useStyles();
-//   useEffect(()=>{
-//     console.log('panget')
-//     fetch(`/myparts/${props.examId}`,{
-//         headers:{
-//             "Authorization": "Bearer "+localStorage.getItem("jwt")
-//         }
-//     })
-//     .then(res => res.json())
-//     .then(result => {
-//         console.log(result)
-//         setData(result.mypost)
-//     })
-//     },[])
 
 useEffect(()=>{
     fetch(`/myexam/${props.examId}`,{
@@ -320,7 +307,6 @@ useEffect(()=>{
 
     return ( 
         <div>
-             <form onSubmit={handleSubmit(onSubmit)}>
             {
                 data.map((item,index)=>{
 
@@ -328,7 +314,6 @@ useEffect(()=>{
 
                 })
             }
-            </form>
             
             
         </div>

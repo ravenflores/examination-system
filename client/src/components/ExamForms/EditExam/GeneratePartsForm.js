@@ -161,7 +161,7 @@ import { ClickAwayListener } from "@material-ui/core";
         
       }
       else{
-        alert("invalid input")
+        console.log("invalid input")
       }
     }
     

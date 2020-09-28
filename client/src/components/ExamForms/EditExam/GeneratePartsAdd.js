@@ -26,7 +26,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CancelIcon from '@material-ui/icons/Cancel';
 
 
-import PartsDetails from './PartForm'
+import PartsDetails from '../CreateExam/PartForm'
 import GeneratePartsList from '../EditExam/GeneratePartsList'
 import { WallpaperSharp } from "@material-ui/icons";
 
@@ -50,9 +50,10 @@ const defaultValues = {
 
 
 export default function Parts(props) {
+
 const [hasPart,setHasPart] = useState(false)
 const [part,setPart] = useState(<> </>)
-const [data,setData] = useState([])
+const [data,setData] = useState(props.data)
   const {
     control,
     register,
@@ -212,6 +213,7 @@ useEffect(()=>{
               
           }
           else{ 
+              props.refetch()
               props.setParts()
               handlePart() 
               console.log(data)
@@ -240,13 +242,7 @@ useEffect(()=>{
       }
 
 <div>
-{!props.partStatus?
-  data.map((item,index)=> {
-    console.log(index)
-    console.log(item)
-    return <GeneratePartsList  examId={props.examId} index={index} item={item} />
-  }):null
-}
+
 </div>
 
         

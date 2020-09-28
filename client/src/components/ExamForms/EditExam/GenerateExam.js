@@ -36,8 +36,9 @@ import { getDate } from "date-fns";
 import moment from 'moment';
 import Fab from '@material-ui/core/Fab';
 
-import Parts from './GenerateParts'
+import Parts from './GeneratePartsAdd'
 import GeneratePartsList from './GeneratePartsList'
+import { DataUsageOutlined } from "@material-ui/icons";
 
 //component
 
@@ -194,31 +195,47 @@ const matchsection = (a) => {
   
  
 
-function CreateExam(props) {
+  export default function CreateExam (props) {
+
   const classes = useStyles();
-  
+  const [data,setData] = useState()
   const [selectedDate, setSelectedDate] = useState(props.item.date);
   const { register, handleSubmit, errors } = useForm();
   const [examId,setExamId] = useState()
   const [partStatus,setPartStatus] = useState(false)
-  const onSubmit = (data, e) => console.log(data, e);
   const onError = (errors, e) => alert("Form is invalid! \nPlease open Parts Accordion if you missed One \n" + e);
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-  const [data,setData] = useState([])
+  
 
-  useEffect(()=>{
+   useEffect(()=>{
+      fetch(`/myparts/${props.examId}`,{
+          headers:{
+              "Authorization": "Bearer "+localStorage.getItem("jwt")
+          }
+      })
+      .then(res => res.json())
+      .then(result => {
+          setData(result.mypost)
+          console.log(result)
+      })
+    },[])  
+    
+  const refetch = () => {
     fetch(`/myparts/${props.examId}`,{
-        headers:{
-            "Authorization": "Bearer "+localStorage.getItem("jwt")
-        }
-    })
-    .then(res => res.json())
-    .then(result => {
-        setData(result.mypost)
-    })
-    },[])   
+      headers:{
+          "Authorization": "Bearer "+localStorage.getItem("jwt")
+      }
+  })
+  .then(res => res.json())
+  .then(result => {
+      setData(result.mypost)
+      console.log(result)
+  })
+  }
+
+
   const saveExam = (data) =>
 {
 if(examId){
@@ -282,6 +299,98 @@ const handlePart = () =>{
   }
 
 }
+
+
+const saveParts = (svdata) =>
+{
+if(!props.examId){
+  console.log("meron")
+  
+}
+else{
+  console.log("wala")
+  console.log(svdata)
+  
+
+  console.log(props.examId)
+
+  fetch("/createparts",{
+    method:"post",  
+    headers:{
+        "Content-Type": "application/json",
+        "Authorization":"Bearer "+localStorage.getItem("jwt")
+    },
+    body:JSON.stringify({   
+      type: svdata.type,
+      items: svdata.items,
+      points: svdata.points,
+      difficulty: svdata.difficulty,
+      instructions: svdata.instructions,
+      examId: props.examId
+
+    })
+}).then(res => res.json())
+.then(datas =>{
+    if(datas.error){
+        alert(datas.error)
+        
+    }
+    else{
+       
+
+        console.log(datas.parts._id)
+        saveItems(svdata,datas.parts._id)
+        
+        
+    }
+})
+}
+}
+
+const saveItems = (svdata,pId) =>
+{
+  console.log("meron")
+  svdata.questions.map((item, index) =>{
+      console.log(item)
+      console.log(pId)
+      fetch("/createitems",{
+        method:"post",  
+        headers:{
+            "Content-Type": "application/json",
+            "Authorization":"Bearer "+localStorage.getItem("jwt")
+        },
+        body:JSON.stringify({   
+          question:item.question,
+          answer: item.answer,
+          choices: item.choices,
+          points: "1",
+          partsId:pId,
+    
+        })
+    }).then(res => res.json())
+    .then(datas =>{ 
+        console.log(datas.error)
+        if(datas.error){
+            alert(datas.error)
+            
+        }
+        else{ 
+            handlePart() 
+            console.log(datas)
+                
+        }
+    })
+
+ })
+
+
+}
+
+const onSubmit = (datas) => {
+  console.log(datas)
+  saveParts(datas)
+
+} 
 
   return (
     <>
@@ -481,7 +590,7 @@ const handlePart = () =>{
       </CardContent>
       </Card>
 
-      {/* <div className={classes.acc}>
+      <div className={classes.acc}>
       <Box 
       display="flex"
       flexDirection="row"
@@ -496,22 +605,30 @@ const handlePart = () =>{
         color="default"
         className={classes.button}
         startIcon={<AddIcon />}
-        type="submit"
+        onClick={()=>handlePart()}
+        // type="submit"
       >
-        Add Parts
+        Add Part
       </Button>
       </Box>
-      </div> */}
+      </div>
 
       
       </form>
-      
+
+
       {
-        data.map((item,index)=> {
-         return <GeneratePartsList  examId={examId} index={index} item={item} />
-        })
-        
+        partStatus && data? <Parts part= {true} examId={props.examId} partStatus={partStatus} statusEdit={true} setParts={()=>handlePart()} refetch={()=>refetch()} data={data} /> : console.log(data)
+
       }
+      {!partStatus && data?
+  data.map((item,index)=> {
+    console.log(index)
+    console.log(item)
+    return <GeneratePartsList  examId={props.examId} index={index} item={item} />
+  })
+:"loading..."
+}
      
       
      
@@ -522,4 +639,4 @@ const handlePart = () =>{
 }
 
 
-export default CreateExam;
+

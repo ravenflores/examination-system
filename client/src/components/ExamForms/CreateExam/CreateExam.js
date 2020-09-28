@@ -394,7 +394,7 @@ const handlePart = () =>{
       
       </form>
       {
-        partStatus? <Parts part= {true} examId={examId} partStatus={partStatus} setParts={()=>handlePart()} /> : <Parts part= {false} />
+        partStatus? <Parts part= {true} examId={examId} partStatus={partStatus} statusEdit={false} setParts={()=>handlePart()} /> :  <Parts statusEdit={false} part= {false} />
       }
      
       
