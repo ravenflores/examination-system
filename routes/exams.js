@@ -298,6 +298,24 @@ router.put('/updateitems/:partId',requireLogin,(req,res) => {
         
     })
     
+}) 
+
+router.delete('/deleteexam/:id',requireLogin,(req,res) => {
+    Exams.findOne({_id:req.params.id})
+    .exec((err,item)=>{
+        if(err || !item){
+            return res.status(422).json({error:err})
+        }
+        // if (post.postedBy._id.toString() === req.user._id.toString()){
+            item.remove()
+            .then(result =>{
+                res.json(result)
+            }).catch(err => {
+                console.log(err)
+            })
+        // }
+    })
+    
 })
 
 

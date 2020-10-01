@@ -1,19 +1,24 @@
 import React,{useState} from 'react'
 
-export default function GenerateFetch(props) {
-    const [state,setState]=useState()
 
-    fetch(`/myitems/${props.item._id}`,{
-        headers:{
-            "Authorization": "Bearer "+localStorage.getItem("jwt")
+export const deletes = (props,data,setData,setDialog) => {
+    
+    fetch(`/deleteexam/${props}`,{
+        method: "delete",
+        headers: {
+            Authorization : "Bearer "+localStorage.getItem("jwt")
+
         }
-    })
-    .then(res => res.json())
+    }).then(res => res.json())
     .then(result => {
         console.log(result)
-        setState(result.mypost)
-
-    })
-   
-    return state
+        console.log(data)
+        
+        const newData = data.filter(item => {
+            return item._id !== result._id
+        })
+        setData(newData) 
+          
+        
+    },setDialog(false))
 }

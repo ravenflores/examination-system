@@ -17,7 +17,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import Switch from '@material-ui/core/Switch';
 
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+
 import Exam from './Exam'
+import {deletes} from './GenerateFetch'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -42,7 +52,37 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+
+
 export default function AllExams(props) {
+
+    const [open,setOpen] = useState(false);
+    const [dialog,setDialog] = useState(false);
+    const [currentId,setCurrentId] = useState(false);
+
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const handleClickOpen = (e) => {
+        setOpen(true);
+        setCurrentId(e)
+
+
+    };
+
+    const handleCloseYes = (e) => {
+        setDialog(true)
+        console.log("napindot")
+        deletes(currentId,data,setData,setDialog)
+        setOpen(false);
+    };
+    const handleCloseNo = (e) => {
+        setDialog(true)
+        console.log("napindot")
+        setDialog(false)
+        setOpen(false);
+    };
+
     const [data,setData] = useState([])
     const classes = useStyles();
     const [state, setState] = React.useState({
@@ -50,9 +90,21 @@ export default function AllExams(props) {
         checkedB: true,
       });
 
-      const handleChange = (event) => {
+    const [stateDis, setStateDis] = React.useState({
+      });
+
+    const handleChange = (event) => {
         setState({ ...state, [event.target.name]: event.target.checked });
       };
+      
+    const handleChangeDis = (event) => {
+        console.log(stateDis)
+        console.log(event.currentTarget.disabled)
+        setStateDis({ ...stateDis, [event.currentTarget.name]: event.currentTarget.disabled });
+        
+       
+      };
+
 
     useEffect(()=>{
         fetch('/myexams',{
@@ -65,7 +117,9 @@ export default function AllExams(props) {
             console.log(result)
             setData(result.mypost)
         })
-        },[])    
+        },[])
+        
+        
         const convertDate = (dates) =>{
 
             let date = new Date(dates.date);
@@ -78,8 +132,41 @@ export default function AllExams(props) {
                  return a
             }
         }
+
+    const dis = (e) => {
+        
+            e.currentTarget.disabled = true
+            console.log(e.currentTarget)
+        
+        }
+
     return (
-        <div style={{width:'inherit'}}>
+
+        <>
+        <div>
+            <Dialog
+                fullScreen={fullScreen}
+                open={open}
+                onClose={handleCloseNo}
+                aria-labelledby="responsive-dialog-title"
+            >
+                <DialogTitle id="responsive-dialog-title">{"Are you sure you want to delete this?"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText>
+                    This will be a lost of your previous inputs please be careful in deleting important data like this.
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button autoFocus disabled={dialog} onClick={(e)=>handleCloseNo(e)} color="primary">
+                    NO
+                </Button>
+                <Button disabled={dialog} onClick={(e)=>handleCloseYes(e)} color="primary" autoFocus>
+                    YES
+                </Button>
+                </DialogActions>
+            </Dialog>
+            </div>
+        <div style={{width:'auto'}}>
             {  
             
                     data.map((item,index) => {
@@ -87,11 +174,11 @@ export default function AllExams(props) {
                             <Card style={{marginBottom:2,borderRadius:0}} key={item._id}>
                             
                             <CardHeader
-                                    // avatar={
-                                    // <Avatar aria-label="recipe" className={classes.avatar}>
-                                    //     R
-                                    // </Avatar>
-                                    // }
+                                    avatar={
+                                    <Avatar aria-label="recipe" className={classes.avatar}>
+                                        R
+                                    </Avatar>
+                                    }
                                     style={{padding:10}}
                                     action={
                                         <>
@@ -101,9 +188,19 @@ export default function AllExams(props) {
                                     </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Delete">
-                                    <IconButton aria-label="delete">
-                                        <DeleteIcon />
-                                    </IconButton>
+                                        
+                                  
+                                        <IconButton 
+                                        aria-label="delete" 
+                                        
+                                        onClick={()=>handleClickOpen(item._id)}
+                                        >
+                                            <DeleteIcon />
+                                            
+                                        </IconButton>
+
+                                   
+                                    
                                     </Tooltip>
                                     <Tooltip title="toggle show and hide exam">
                                     <FormControlLabel
@@ -135,5 +232,6 @@ export default function AllExams(props) {
                 }
             
         </div>
+        </>
     )
 }
