@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const Teachers = mongoose.model("Teachers")
+const Admin = mongoose.model("Admin")
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const {JWT_SECRET} = require ('../config/keys')
@@ -54,6 +55,47 @@ router.post('/signupteacher',(req,res) => {
     })
 })
 
+router.post('/signupadmin',(req,res) => {
+    const {firstname,lastname,email,password,photo} = req.body
+    if(!firstname || !lastname || !email  || !password || !photo) {
+        return res.status(422).json({error: "Please add all the fields"})
+    }
+    
+    Admin.findOne({email: email})
+    .then ((savesUser) => {
+        if(savesUser){
+            console.log("may email")
+            return res.status(422).json({error: "Email already used"})
+        }
+        bcrypt.hash(password,12)
+        .then(hashpassword => {
+
+            const admin = new Admin({
+                email,
+                password:hashpassword,
+                firstname,
+                lastname,
+                photo
+                
+            })
+    
+            admin.save()
+            .then(user => {
+                console.log("Saved successfully")
+                res.json({message:"Saved successfully"})
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+        })
+      
+    })
+    .catch(err => {
+        console.log(err)
+    })
+})
+
 router.post('/signinteacher',(req,res) => {
     
     const {email,password} = req.body
@@ -63,6 +105,42 @@ router.post('/signinteacher',(req,res) => {
     }
 
     Teachers.findOne({email:email})
+    .then(savedUser => {
+        console.log(savedUser)
+        if(!savedUser){
+            return res.status(422).json({error:"Invalid email or password"})
+        }
+        bcrypt.compare(password,savedUser.password)
+        .then(doMatch => {
+            if(doMatch){
+                
+                // res.json({message:"succesfully signed In"})
+                const token = jwt.sign({
+                    _id: savedUser._id
+                },JWT_SECRET)
+                const {_id,name,email,photo,followers,following} = savedUser
+                res.json({token,user:{_id,name,photo,email,followers,following}})
+            }
+            else{
+                return res.status(422).json({error: "Invalid password"})
+                
+            }
+        })
+        .catch(err =>{
+            console.log(err)
+        })
+
+    })
+})
+router.post('/signinadmin',(req,res) => {
+    
+    const {email,password} = req.body
+    if(!email || !password){ 
+        res.status(422).json({error:"Please provide email or password"})
+        console.log("")
+    }
+
+    Admin.findOne({email:email})
     .then(savedUser => {
         console.log(savedUser)
         if(!savedUser){

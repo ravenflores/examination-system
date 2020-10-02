@@ -3,7 +3,9 @@ import Navbar from './components/Navbar'
 import {BrowserRouter, Route,Switch,useHistory} from 'react-router-dom'
 import Home from './components/ExamForms/Homepage/Home'
 import TeacherSignUp from './components/ExamForms/SignUpForms/Teacher'
+import AdminSignUp from './components/ExamForms/SignUpForms/Admin'
 import TeacherDashboard from './components/ExamForms/Dashboard/Teacher'
+import AdminDashboard from './components/ExamForms/Dashboard/Admin'
 import {reducer,initialState} from './reducers/userReducer'
 import './App.css'
 
@@ -24,20 +26,20 @@ const Routing = () => {
 
     console.log(position)
     
-      if(user){
-        dispatch({type:"USER",payload:user})
-        history.push('/teacher/dashboard')
-      }
-      else{
+      // if(user){
+      //   dispatch({type:"USER",payload:user})
+      //   history.push('/teacher/dashboard')
+      // }
+      // else{
+
         if(position=="teacher")
         {
           history.push('/teacher')
         }
-        else {
-          history.push('/')
-        }
-      }
-                                                                                                                                                                                                                                                                                                                                                                   
+        // else {
+        //   history.push('/')
+        // }
+      // }                                                                                                                                                                                                                                                                                                                                                           
   },[])
   return(
     <Switch>
@@ -56,6 +58,14 @@ const Routing = () => {
         <Route exact path= "/teacher/dashboard/allexam">
           <AllExams />
         </Route>
+        <Route exact path= "/admin">
+          <AdminSignUp />
+        </Route>
+        <Route exact path= "/admin/dashboard">
+          <AdminDashboard />
+        </Route>
+        
+        
     </Switch>
     )
   

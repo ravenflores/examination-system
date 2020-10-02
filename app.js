@@ -13,8 +13,11 @@ require ('./models/user')
 //auth
 require ('./models/teachers')
 require ('./models/students')
+require ('./models/admin')
+require ('./models/classes')
 
 //exams
+
 require ('./models/exams')
 require ('./models/parts')
 require ('./models/items')
@@ -22,6 +25,7 @@ require ('./models/items')
 app.use(express.json())
 app.use(require('./routes/auth'))
 app.use(require('./routes/exams'))
+app.use(require('./routes/admin'))
 // app.use(require('./routes/post'))
 // app.use(require('./routes/user'))
 
